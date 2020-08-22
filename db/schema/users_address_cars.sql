@@ -30,3 +30,10 @@ CREATE TABLE cars (
   owner_id INTEGER REFERENCES users(id) ON DELETE CASCADE
 );
 
+CREATE TABLE messages (
+id SERIAL PRIMARY KEY NOT NULL,
+buyer_id VARCHAR(255),
+car_id VARCHAR(255),
+message TEXT
+);
+
