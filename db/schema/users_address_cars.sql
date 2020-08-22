@@ -13,10 +13,11 @@ CREATE TABLE addresses (
   province VARCHAR(255) NOT NULL,
   city VARCHAR(255) NOT NULL,
   street VARCHAR(255) NOT NULL,
-  postal_codode VARCHAR(255) NOT NULL,
+  postal_code VARCHAR(255) NOT NULL,
 );
 
 CREATE TABLE cars (
+  id SERIAL PRIMARY KEY NOT NULL,
   make VARCHAR(255) NOT NULL,
   model VARCHAR(255) NOT NULL,
   year SMALLINT NOT NULL,
@@ -27,5 +28,12 @@ CREATE TABLE cars (
   image_url VARCHAR(255) NOT NULL,
   availability BOOLEAN,
   owner_id INTEGER REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE messages (
+id SERIAL PRIMARY KEY NOT NULL,
+buyer_id VARCHAR(255),
+car_id VARCHAR(255),
+message TEXT
 );
 
