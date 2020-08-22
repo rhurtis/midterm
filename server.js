@@ -50,6 +50,22 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
+
+///////////////////////////////////// THIS IS TO BE PUTED ON SEPERATE FOLDER /////////////////////////////////////
+//login form route
+app.get('/login', (req, res) => {
+  res.render("login");
+});
+//register form route
+app.get('/register', (req, res) => {
+  res.render("register");
+});
+//checkout form route
+app.get('/checkout', (req, res) => {
+  res.render("checkout");
+});
+///////////////////////////////////// THIS IS TO BE PUTED ON SEPERATE FOLDER /////////////////////////////////////
+
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
 });
