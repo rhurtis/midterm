@@ -60,6 +60,10 @@ app.get('/login', (req, res) => {
 app.get('/register', (req, res) => {
   res.render("register");
 });
+//cart form route
+app.get('/cart', (req, res) => {
+  res.render("cart");
+});
 //checkout form route
 app.get('/checkout', (req, res) => {
   res.render("checkout");
