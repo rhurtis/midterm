@@ -1,0 +1,27 @@
+/* @import url("https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap"); */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: boarder-box;
+}
+
+body {
+  min-height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Indie Flower', cursive;
+  font-size: 24px;
+}
+
+.chat-container {
+  display: flex;
+  justify-content: center;
+  max-width: 500px;
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 2px 9px 25px #0b2a5b;
+  overflow: hidden;
+  border: 1px solid #0b2a5b;
+  background-color: black;
+}

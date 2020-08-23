@@ -2,13 +2,15 @@
 require('dotenv').config();
 
 // Web server config
-const PORT       = process.env.PORT || 8080;
-const ENV        = process.env.ENV || "development";
-const express    = require("express");
+const PORT = process.env.PORT || 8080;
+const ENV = process.env.ENV || "development";
+const express = require("express");
 const bodyParser = require("body-parser");
-const sass       = require("node-sass-middleware");
-const app        = express();
-const morgan     = require('morgan');
+// const sass = require("node-sass-middleware");
+const app = express();
+const morgan = require('morgan');
+const io = require('socket.io')
+const path = require('path');
 
 // PG database client/connection setup
 const { Pool } = require('pg');
@@ -23,13 +25,18 @@ app.use(morgan('dev'));
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use("/styles", sass({
-  src: __dirname + "/styles",
-  dest: __dirname + "/public/styles",
-  debug: true,
-  outputStyle: 'expanded'
-}));
-app.use(express.static("public"));
+// app.use(sass({
+//   src: __dirname + "/styles",
+//   dest: __dirname + "/public/styles",
+//   debug: true,
+//   outputStyle: 'expanded'
+// }));
+
+app.use(express.static(path.join(__dirname, "public")));
+
+app.on('connection', socket => {
+  console.log('connected, ready to use!')
+})
 
 // Separated Routes for each Resource
 // Note: Feel free to replace the example routes below with your own
@@ -68,6 +75,11 @@ app.get('/cart', (req, res) => {
 app.get('/checkout', (req, res) => {
   res.render("checkout");
 });
+
+//message form route
+app.get('/message', function(req, res) {
+  res.render("message");
+})
 ///////////////////////////////////// THIS IS TO BE PUTED ON SEPERATE FOLDER /////////////////////////////////////
 
 app.listen(PORT, () => {

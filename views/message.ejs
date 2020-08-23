@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!---------------------Meta Information-------------------------->
+  <meta charset="utf-8">
+
+  <!---------------------External CSS-------------------------->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <link rel="stylesheet" href="/styles/chat.css" type="text/css" />
+
+  <!---------------------Font CSS-------------------------->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet" ? />
+
+
+  <title>Message</title>
+  <!---------------------External CSS-------------------------->
+  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</head>
+
+<body>
+  <header class="header">
+    <%- include('partials/_header') %>
+  </header>
+
+  <div class="chat-container">
+    <div class="chat-header">
+      <div class="logo">
+        <i class="fab fa-facebook-messenger"></i>
+        <h3 class="h3"> Messenger</h3>
+      </div>
+      <p id="your-name"> Your name </p>
+    </div>
+    <!---------------------------------------------------->
+    <div class="chat-section">
+      <div class="main-wrapper">
+        <div class="chat-content">
+          <div class="message">
+            <div class="message-row other-message">
+              <div class="message-title">
+                👦<span> Dev </span>
+              </div>
+              <div class="message-text">
+                just a testing message here
+                i'm just going to typ e alot of different things header to make it seem like
+                there's a lot of words here. Repeat!i'm just going to typ e alot of different things header to make it
+                seem like
+                there's a lot of words here. Repeat!i'm just going to typ e alot of different things header to make it
+                seem like
+                there's a lot of words here. Repeat!i'm just going to typ e alot of different things header to make it
+                seem like
+                there's a lot of words here. Repeat!
+              </div>
+              <div class="message-time">
+                Aug 22
+              </div>
+            </div>
+            <div class="message-row you-message">
+              <div class="message-title">
+                👩<span>User</span>
+              </div>
+              <div class="message-text">
+                just a testing message here
+                i'm just going to typ e alot of different things header to make it seem like
+                there's a lot of words here. Repeat!i'm just going to typ e alot of different things header to make it
+                seem like
+                there's a lot of words here. Repeat!i'm just going to typ e alot of different things header to make it
+                seem like
+                there's a lot of words here. Repeat!i'm just going to typ e alot of different things header to make it
+                seem like
+                there's a lot of words here. Repeat!i'm just going to typ e alot of different things header to make it
+                seem like
+                there's a lot of words here. Repeat!
+              </div>
+              <div class="message-time">
+                Aug 22
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+        <!--------------------------------------------------------------------->
+        <form class="msg-text">
+          <input type="text" name="msg" id="msg" placeholder="Type a message here..." autocomplete="off">
+          <button>
+            <i class="fas fa-car-side">Send</i>
+
+          </button>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- footer-->
+  <footer class="footer">
+    <%- include('partials/_footer') %>
+  </footer>
+
+</body>
+
+
+</html>
