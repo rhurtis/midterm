@@ -1,0 +1,166 @@
+<!-- Page for creating a new listing.  -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>New Listing</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+    <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+    <script type="text/javascript" src="/scripts/app.js"></script>
+  </head>
+
+<body>
+  <header>
+    <%- include('partials/_header') %>
+  </header>
+  <!--main-->
+  <div class="container">
+    <div class="py-5 text-center">
+      <h2>Create a New Listing</h2>
+    </div>
+
+    <div class="row">
+
+      <div class="col-md-8 order-md-1">
+        <h4 class="mb-3">Vehicle Details</h4>
+        <form class="needs-validation" novalidate>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="make">Make</label>
+              <input type="text" class="form-control" id="make" placeholder="ex: Toyota" value="" required>
+              <div class="invalid-feedback">
+                Valid Make is Required
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="model">Model</label>
+              <input type="text" class="form-control" id="model" placeholder="ex: Corolla" value="" required>
+              <div class="invalid-feedback">
+                Valid model name is required.
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="year">Year</label>
+              <input type="text" class="form-control" id="year" placeholder="ex: 2005" value="" required>
+              <div class="invalid-feedback">
+                Valid year is required.
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="mileage">Mileage (km)</label>
+              <input type="text" class="form-control" id="mileage" placeholder="ex: 195000km" value="" required>
+              <div class="invalid-feedback">
+                Valid mileage is required.
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="price">Price</label>
+              <input type="text" class="form-control" id="price" placeholder="ex: $5000" value="" required>
+              <div class="invalid-feedback">
+                Valid price is required.
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="email">Email(customers will see this)</label>
+              <input type="text" class="form-control" id="email" placeholder="ex: you@example.com" value="" required>
+              <div class="invalid-feedback">
+                Valid email is required.
+              </div>
+            </div>
+          </div>
+
+
+          <h4> Location of Vehicle</h4>
+
+          <div class="mb-3">
+            <label for="address">Address</label>
+            <input type="text" class="form-control" id="address" placeholder="ex: 1234 Main St" required>
+            <div class="invalid-feedback">
+              Please enter an address.
+            </div>
+          </div>
+
+
+
+          <div class="row">
+            <div class="col-md-5 mb-3">
+              <label for="country">Country</label>
+              <select class="custom-select d-block w-100" id="country" required>
+                <option value="">Choose...</option>
+                <option>Canada</option>
+              </select>
+              <div class="invalid-feedback">
+                Please select a valid country.
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="province">Province</label>
+              <select class="custom-select d-block w-100" id="province" required>
+                <option value="">Choose...</option>
+                <option>Ontario</option>
+              </select>
+              <div class="invalid-feedback">
+                Please provide a valid state.
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label for="PostalCode">Postal Code</label>
+              <input type="text" class="form-control" id="postalCode" placeholder="ex: A1A 2B2" required>
+              <div class="invalid-feedback">
+                Zip code required.
+              </div>
+            </div>
+          </div>
+          <hr class="mb-4">
+
+
+
+          <h4 class="mb-3">Upload Pictures</h4>
+          <button >Browse</button>
+          <div class="d-block my-3">
+
+          </div>
+          <div class="row">
+
+            </div>
+
+            </div>
+          </div>
+          <div class="row">
+
+            </div>
+
+          </div>
+          <hr class="mb-4">
+          <button class="btn btn-primary btn-lg btn-block" type="submit">Submit Listing</button>
+        </form>
+      </div>
+    </div>
+
+    <footer class="my-5 pt-5 text-muted text-center text-small">
+      <p class="mb-1">&copy; 2017-2019 Company Name</p>
+      <ul class="list-inline">
+        <li class="list-inline-item"><a href="#">Privacy</a></li>
+        <li class="list-inline-item"><a href="#">Terms</a></li>
+        <li class="list-inline-item"><a href="#">Support</a></li>
+      </ul>
+    </footer>
+  </div>
+
+  <!--footer-->
+  <footer>
+    <%- include('partials/_footer') %>
+  </footer>
+
+</body>
+
+</html>
