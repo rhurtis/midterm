@@ -9,8 +9,10 @@ const bodyParser = require("body-parser");
 // const sass = require("node-sass-middleware");
 const app = express();
 const morgan = require('morgan');
-const io = require('socket.io')
 const path = require('path');
+const http = require('http').createServer(app)
+
+
 
 // PG database client/connection setup
 const { Pool } = require('pg');
@@ -34,8 +36,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, "public")));
 
-app.on('connection', socket => {
-  console.log('connected, ready to use!')
+const io = require('socket.io')(http)
+io.on('connection', socket => {
+  console.log('A new user connected');
+  socket.on('chat message', (msg) => {
+    console.log('message: ' + msg);
+  });
 })
 
 // Separated Routes for each Resource
@@ -82,6 +88,6 @@ app.get('/message', function(req, res) {
 })
 ///////////////////////////////////// THIS IS TO BE PUTED ON SEPERATE FOLDER /////////////////////////////////////
 
-app.listen(PORT, () => {
+http.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
 });

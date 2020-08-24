@@ -4,14 +4,19 @@
 <head>
   <!---------------------Meta Information-------------------------->
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=10">
 
   <!---------------------External CSS-------------------------->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
     integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
   <link rel="stylesheet" href="/styles/chat.css" type="text/css" />
 
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/scripts/app.js"></script>
+
   <!---------------------Font CSS-------------------------->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet" ? />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" />
 
 
   <title>Message</title>
@@ -42,15 +47,7 @@
                 👦<span> Dev </span>
               </div>
               <div class="message-text">
-                just a testing message here
-                i'm just going to typ e alot of different things header to make it seem like
-                there's a lot of words here. Repeat!i'm just going to typ e alot of different things header to make it
-                seem like
-                there's a lot of words here. Repeat!i'm just going to typ e alot of different things header to make it
-                seem like
-                there's a lot of words here. Repeat!i'm just going to typ e alot of different things header to make it
-                seem like
-                there's a lot of words here. Repeat!
+                Hello! How are you doing today?!
               </div>
               <div class="message-time">
                 Aug 22
@@ -61,17 +58,7 @@
                 👩<span>User</span>
               </div>
               <div class="message-text">
-                just a testing message here
-                i'm just going to typ e alot of different things header to make it seem like
-                there's a lot of words here. Repeat!i'm just going to typ e alot of different things header to make it
-                seem like
-                there's a lot of words here. Repeat!i'm just going to typ e alot of different things header to make it
-                seem like
-                there's a lot of words here. Repeat!i'm just going to typ e alot of different things header to make it
-                seem like
-                there's a lot of words here. Repeat!i'm just going to typ e alot of different things header to make it
-                seem like
-                there's a lot of words here. Repeat!
+                hi
               </div>
               <div class="message-time">
                 Aug 22
@@ -82,18 +69,34 @@
 
         </div>
         <!--------------------------------------------------------------------->
-        <form class="msg-text">
+        <form class="msg-text" action="/message/" method="POST">
           <input type="text" name="msg" id="msg" placeholder="Type a message here..." autocomplete="off">
-          <button>
+          <button id="btn-send">
             <i class="fas fa-car-side">Send</i>
 
           </button>
 
         </form>
-
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
       </div>
     </div>
   </div>
+
+  <!-- <script>
+    const socket = io('http://localhost:8080/message');
+  </script> -->
+
+  <script>
+    $(function() {
+      let socket = io();
+      $('form').submit(function() {
+        socket.emit('chat message', $('#msg').val());
+        $('#msg').val('');
+        return false;
+      });
+    });
+  </script>
 
   <!-- footer-->
   <footer class="footer">
