@@ -35,11 +35,13 @@ app.use(express.static("public"));
 // Note: Feel free to replace the example routes below with your own
 const usersRoutes = require("./routes/users");
 const widgetsRoutes = require("./routes/widgets");
+const messagesRoutes = require("./routes/messages")
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
 app.use("/api/users", usersRoutes(db));
 app.use("/api/widgets", widgetsRoutes(db));
+app.use("/api/messages", messagesRoutes(db));
 // Note: mount other resources here, using the same pattern above
 
 
@@ -52,6 +54,7 @@ app.get("/", (req, res) => {
 
 
 ///////////////////////////////////// THIS IS TO BE PUTED ON SEPERATE FOLDER /////////////////////////////////////
+
 //login form route
 app.get('/login', (req, res) => {
   res.render("login");
@@ -67,6 +70,10 @@ app.get('/cart', (req, res) => {
 //checkout form route
 app.get('/checkout', (req, res) => {
   res.render("checkout");
+});
+//new listing form route
+app.get('/createNewListing', (req, res) => {
+  res.render("createNewListing");
 });
 ///////////////////////////////////// THIS IS TO BE PUTED ON SEPERATE FOLDER /////////////////////////////////////
 
