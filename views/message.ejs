@@ -25,6 +25,7 @@
 </head>
 
 <body>
+  <script> window.author = "<%= name %>" </script>
   <header class="header">
     <%- include('partials/_header') %>
   </header>
@@ -32,10 +33,10 @@
   <div class="chat-container">
     <div class="chat-header">
       <div class="logo">
-        <i class="fab fa-facebook-messenger"></i>
-        <h3 class="h3"> Messenger</h3>
+        <i class="fab fa-rocketchat fa-2x"></i>
+        <h3 class="h3"> TacoChat </h3>
       </div>
-      <p id="your-name"> Your name </p>
+      <p id="your-name"> <%= name %> </p>
     </div>
     <!---------------------------------------------------->
     <div class="chat-section">
@@ -44,24 +45,24 @@
           <div class="message">
             <div class="message-row other-message">
               <div class="message-title">
-                👦<span> Dev </span>
+                🚗 <span> Angel Ho </span>
               </div>
               <div class="message-text">
-                Hello! How are you doing today?!
+                Hi there! Why do you want to sell this car?
               </div>
               <div class="message-time">
-                Aug 22
+                Aug 22 2020
               </div>
             </div>
             <div class="message-row you-message">
               <div class="message-title">
-                👩<span>User</span>
+                🚙 <span> Stephanie Wolff</span>
               </div>
               <div class="message-text">
-                hi
+                Hi Angel! I really like this car but I am moving out of the country! Do you want to come see the car?
               </div>
               <div class="message-time">
-                Aug 22
+                Aug 22 2020
               </div>
 
             </div>
@@ -72,8 +73,7 @@
         <form class="msg-text" action="/message/" method="POST">
           <input type="text" name="msg" id="msg" placeholder="Type a message here..." autocomplete="off">
           <button id="btn-send">
-            <i class="fas fa-car-side">Send</i>
-
+            <i class="fas fa-car-side"> Send </i>
           </button>
 
         </form>

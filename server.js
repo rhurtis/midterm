@@ -41,6 +41,12 @@ io.on('connection', socket => {
   console.log('A new user connected');
   socket.on('chat message', (msg) => {
     console.log('message: ' + msg);
+    //db.query insert into
+    socket.broadcast.emit('new message', msg);
+    // console.log('message: ' + msg);
+    //id of the user cookies
+    //seller id
+    //id of the car
   });
 })
 
@@ -84,7 +90,9 @@ app.get('/checkout', (req, res) => {
 
 //message form route
 app.get('/message', function(req, res) {
-  res.render("message");
+  //if req.session.name exists
+  //else res.send(pls login or redirect)
+  res.render("message", { name: req.session.name });
 })
 ///////////////////////////////////// THIS IS TO BE PUTED ON SEPERATE FOLDER /////////////////////////////////////
 
