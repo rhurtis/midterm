@@ -1,13 +1,16 @@
-$(() => {
-  $.ajax({
-    method: "GET",
-    url: "/api/users"
-  }).done((users) => {
-    for (user of users) {
-      $("<div>").text(user.name).appendTo($("body"));
-    }
-  });;
-});
+// $(() => {
+//   // $.ajax({
+//   //   method: "GET",
+//   //   url: "/api/users"
+//   // }).done((users) => {
+//   //   for (user of users) {
+//   //     $("<div>").text(user.name).appendTo($("body"));
+//   //   }
+//   // });;
+// });
+
+//socket io stuff in here client side (catch side msgs coming from the sever, once its caught, then update the chatbox)
+
 
 // $(() => {
 //   // $.ajax({
