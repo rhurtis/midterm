@@ -59,6 +59,12 @@ io.on('connection', socket => {
   socket.on('chat message', (msg) => {
     io.emit('new message', msg);
     console.log('message: ' + msg);
+    //db.query insert into
+    socket.broadcast.emit('new message', msg);
+    // console.log('message: ' + msg);
+    //id of the user cookies
+    //seller id
+    //id of the car
   });
 <<<<<<< eeadadedb5a8b848f832aeb0036d7d7e3f61954f
 });
@@ -213,7 +219,9 @@ app.get('/checkout', (req, res) => {
 
 //message form route
 app.get('/message', function(req, res) {
-  res.render("message");
+  //if req.session.name exists
+  //else res.send(pls login or redirect)
+  res.render("message", { name: req.session.name });
 })
 
 //new listing form route
