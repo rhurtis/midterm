@@ -5,13 +5,19 @@ require('dotenv').config();
 const PORT = process.env.PORT || 8080;
 const ENV = process.env.ENV || "development";
 const express = require("express");
+const cookieSession = require('cookie-session');
 const bodyParser = require("body-parser");
+
 // const sass = require("node-sass-middleware");
 const app = express();
 const morgan = require('morgan');
 const path = require('path');
-const http = require('http').createServer(app)
+const http = require('http').createServer(app);
 
+app.use(cookieSession({
+  name: 'session',
+  keys: ['userId']
+}));
 
 
 // PG database client/connection setup
@@ -42,19 +48,22 @@ io.on('connection', socket => {
   socket.on('chat message', (msg) => {
     console.log('message: ' + msg);
   });
-})
+});
 
 // Separated Routes for each Resource
 // Note: Feel free to replace the example routes below with your own
 const usersRoutes = require("./routes/users");
 const widgetsRoutes = require("./routes/widgets");
-const messagesRoutes = require("./routes/messages")
-
+const messagesRoutes = require("./routes/messages");
+const loginRoutes = require("./routes/login");
+const carsRoutes = require("./routes/cars");
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
 app.use("/api/users", usersRoutes(db));
 app.use("/api/widgets", widgetsRoutes(db));
 app.use("/api/messages", messagesRoutes(db));
+app.use("/api/login", loginRoutes(db));
+app.use("/api/cars", carsRoutes(db));
 // Note: mount other resources here, using the same pattern above
 
 
@@ -62,7 +71,19 @@ app.use("/api/messages", messagesRoutes(db));
 // Warning: avoid creating more routes in this file!
 // Separate them into separate routes files (see above).
 app.get("/", (req, res) => {
-  res.render("index");
+
+  db.query(`SELECT * FROM cars;`)
+      .then(data => {
+        const cars = data.rows;
+        //res.json({cars});
+        res.render('index', { cars: data.rows, name: req.session.name});
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+
 });
 
 
@@ -70,7 +91,36 @@ app.get("/", (req, res) => {
 
 //login form route
 app.get('/login', (req, res) => {
+
   res.render("login");
+});
+
+///loging route
+app.post('/login', (req, res) => {
+  const email = req.body.email;
+  const password1 = req.body.password;
+
+
+  db.query(`SELECT * FROM users
+  WHERE email = $1;`,[email])
+    .then(data => {
+      if (data.rows.length === 0) {
+        res.status(400).send("Email does not exist");
+      } else if (password1 === data.rows[0].password) {
+   req.session.userId = data.rows[0].id;
+        req.session.name = data.rows[0].name;//put the info in the suer
+         res.redirect('/');
+       } else {
+        console.log('102');
+        res.status(400).send("Email and password do not much");
+       }
+
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
 });
 //register form route
 app.get('/register', (req, res) => {
