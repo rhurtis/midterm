@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 8080;
 const ENV = process.env.ENV || "development";
 const express = require("express");
 const bodyParser = require("body-parser");
-// const sass = require("node-sass-middleware");
+const sass = require("node-sass-middleware");
 const app = express();
 const morgan = require('morgan');
 const path = require('path');
@@ -25,24 +25,32 @@ db.connect();
 //         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
 app.use(morgan('dev'));
 
+
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(sass({
-//   src: __dirname + "/styles",
-//   dest: __dirname + "/public/styles",
-//   debug: true,
-//   outputStyle: 'expanded'
-// }));
+
+app.use(sass({
+  /* Options */
+  src: path.join(__dirname, 'styles'),
+  dest: path.join(__dirname, 'public', 'styles'),
+  debug: true,
+  outputStyle: 'compressed',
+  prefix: '/styles'  // Where prefix is at <link rel="stylesheets" href="prefix/style.css"/>
+}));
+
 
 app.use(express.static(path.join(__dirname, "public")));
+
 
 const io = require('socket.io')(http)
 io.on('connection', socket => {
   console.log('A new user connected');
   socket.on('chat message', (msg) => {
+    io.emit('new message', msg);
     console.log('message: ' + msg);
   });
 })
+//broadcast the msgs to all the connected clients (resending it bk)
 
 // Separated Routes for each Resource
 // Note: Feel free to replace the example routes below with your own
@@ -89,6 +97,7 @@ app.get('/checkout', (req, res) => {
 app.get('/message', function(req, res) {
   res.render("message");
 })
+
 //new listing form route
 app.get('/createNewListing', (req, res) => {
   res.render("createNewListing");

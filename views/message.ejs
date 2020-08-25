@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="/styles/chat.css" type="text/css" />
 
   <script src="/socket.io/socket.io.js"></script>
+  <script src="/vendor/jquery-3.0.0.js"></script>
   <script src="/scripts/app.js"></script>
 
   <!---------------------Font CSS-------------------------->
@@ -44,7 +45,7 @@
           <div class="message">
             <div class="message-row other-message">
               <div class="message-title">
-                👦<span> Dev </span>
+                👦<span> Bob </span>
               </div>
               <div class="message-text">
                 Hello! How are you doing today?!
@@ -55,7 +56,7 @@
             </div>
             <div class="message-row you-message">
               <div class="message-title">
-                👩<span>User</span>
+                👩<span>Ashe</span>
               </div>
               <div class="message-text">
                 hi
@@ -69,14 +70,14 @@
 
         </div>
         <!--------------------------------------------------------------------->
-        <form class="msg-text" action="/message/" method="POST">
+        <form class="msg-text">
+
           <input type="text" name="msg" id="msg" placeholder="Type a message here..." autocomplete="off">
           <button id="btn-send">
             <i class="fas fa-car-side">Send</i>
-
           </button>
-
         </form>
+
         <script src="/socket.io/socket.io.js"></script>
         <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
       </div>
@@ -88,16 +89,35 @@
   </script> -->
 
   <script>
-    $(function() {
-      let socket = io();
-      $('form').submit(function() {
-        socket.emit('chat message', $('#msg').val());
-        $('#msg').val('');
-        return false;
-      });
-    });
-  </script>
+    // $(function() {
+    //   let socket = io();
+    //   $('form').submit(function(e) {
+    //     e.preventDefault();
+    //     socket.emit('chat message', { msg: $('#msg').val(), author: "Hanzo" });
+    //     //author: would be going through the database for users email, will change when we have it so we can use template vars
+    //     $('#msg').val('');
+    //     return false;
+    //   });
 
+    //   socket.on('new message', function(msg) {
+    //     console.log("msg", msg);
+    //     // $('#msgList').append($("#message-text").text(msg));
+    //     $('.message').append(`<div class="message-row other-message">
+    //       <div class="message-title">
+    //         👦<span> ${msg.author} </span>
+    //       </div>
+    //       <div class="message-text">
+    //         ${msg.msg}
+    //           </div>
+    //       <div class="message-time">
+    //         Aug 22
+    //           </div>
+    //     </div>`);
+
+    //   });
+    // });
+  </script>
+  <!--socket.on event handler on the client, receive th msg from the server jquery to get the list of msg then append msg to the chat box, -->
   <!-- footer-->
   <footer class="footer">
     <%- include('partials/_footer') %>
