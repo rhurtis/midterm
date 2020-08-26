@@ -236,13 +236,21 @@ app.get('/myGarage', (req, res) => {
   res.render("myGarage");
 });
 
+// posting request for favourites
 app.post('/myFavourite', (req, res) => {
   console.log('here is the car id',req.body.carId)
+  const currentUserId = req.session.userId;
+  const carId = req.body.carId;
+  const infoArray = [currentUserId, carId];
   db.query(`SELECT * FROM cars;`)
       .then(data => {
         const cars = data.rows;
         //res.json({cars});
         res.render('index', { cars: data.rows, name: req.session.name});
+        return db.query(`
+        INSERT INTO favourites (user_id, cars_id, favourite)
+        VALUES ($1, $2, true)
+        `,infoArray)
       })
       .catch(err => {
         res
