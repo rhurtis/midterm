@@ -1,16 +1,3 @@
-// $(() => {
-//   // $.ajax({
-//   //   method: "GET",
-//   //   url: "/api/users"
-//   // }).done((users) => {
-//   //   for (user of users) {
-//   //     $("<div>").text(user.name).appendTo($("body"));
-//   //   }
-//   // });;
-// });
-
-//socket io stuff in here client side (catch side msgs coming from the sever, once its caught, then update the chatbox)
-
 
 // $(() => {
 //   // $.ajax({
@@ -23,8 +10,7 @@
 //   // });;
 // });
 
-//socket io stuff in here client side (catch side msgs coming from the sever, once its caught, then update the chatbox)
-
+//socket.on event handler on the client, receive th msg from the server jquery to get the list of msg then append msg to the chat box
 
 $(function() {
   let socket = io();
@@ -43,18 +29,14 @@ $(function() {
               <div class="message-time">
                 ${timeNow}
               </div>`)
-    //author: would be going through the database for users email, will change when we have it so we can use template vars
-    //if and else statement, if username = myusername addclass, if not, other msg and name first person differly than the second person
-    //put users put it into the dom, use jquery to grab the username from where it is stored
     $('#msg').val('');
     return false;
   })
-})
 
-socket.on('new message', function(msg) {
-  console.log("msg", msg)
-  let timeNow = new Date().toLocaleString();
-  $('.message').append(`<div class="message-row other-message">
+  socket.on('new message', function(msg) {
+    console.log("msg", msg)
+    let timeNow = new Date().toLocaleString();
+    $('.message').append(`<div class="message-row other-message">
           <div class="message-title">
             🚗 <span> ${msg.author} </span>
           </div>
@@ -64,7 +46,7 @@ socket.on('new message', function(msg) {
           <div class="message-time">
             ${timeNow}
               </div>
-        </div>`);
-
+        </div>`)
+    return false;
   });
-
+});

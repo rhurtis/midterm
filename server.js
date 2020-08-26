@@ -54,11 +54,13 @@ app.use(express.static(path.join(__dirname, "public")));
 
 
 const io = require('socket.io')(http)
+
 io.on('connection', socket => {
   console.log('A new user connected');
+
   socket.on('chat message', (msg) => {
-    io.emit('new message', msg);
-    console.log('message: ' + msg);
+
+    // console.log('message: ' + msg);
     //db.query insert into
     socket.broadcast.emit('new message', msg);
     // console.log('message: ' + msg);
@@ -219,9 +221,12 @@ app.get('/checkout', (req, res) => {
 
 //message form route
 app.get('/message', function(req, res) {
-  //if req.session.name exists
-  //else res.send(pls login or redirect)
-  res.render("message", { name: req.session.name });
+  if (!req.session.name) {
+    res.status(403).send('<h1>Please make sure you are logged in! Click here to redirect back to  <a href= "/login" > the login page </a> or here to <a href= "/register" > register :) </h1>');
+  } else {
+    res.render("message", { name: req.session.name });
+  }
+
 })
 
 //new listing form route
