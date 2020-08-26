@@ -1,78 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Home Page</title>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+  <title>Home Page</title>
 
-    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
-    <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
-    <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+  <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
 
-    <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
-    <script type="text/javascript" src="/scripts/app.js"></script>
-  </head>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
-  <body>
-    <header>
-      <%- include('partials/_header') %>
-    </header>
-    <!---------------------------main--------------------------->
-    <h1><%= name %></h1>
-    <div class="container">
-      <div class="row">
-        <div class="side-container col-lg-3">
-          <div class="" id="choose-car">
-            <!---------------------------filter model--------------------------->
-            <select class="mdb-select colorful-select dropdown-primary md-form" multiple searchable="Search here..">
-              <option onclick="window.location.href='/'" value="" <%= !!selected && 'selected' %>>Choose your car</option>
-              <% for (car in cars) { %>
-              <option <%= selected === cars[car].make && 'selected' %> onclick="window.location.href='<%= updateUrlQuery("make",cars[car].make, url) %>'" value="<%= car %>"><%= cars[car]["make"] %></option>
-             <% } %>
-            </select>
-          </div>
-          <!---------------------------filter Price--------------------------->
-          <div class="" id="choose-price">
-            <select class="mdb-select colorful-select dropdown-primary md-form" multiple searchable="Search here..">
-              <option onclick="window.location.href='/'" value="" <%= !!selected && 'selected' %>>Order By</option>
-              <option onclick="window.location.href='<%= updateUrlQuery("sort", -1, url) %>'">Price Ascending</option>
-              <option onclick="window.location.href='<%= updateUrlQuery("sort", 1, url) %>'">Price Descending</option>
-            </select>
-            <label class="mdb-main-label">Order By</label>
-            <button class="btn-save btn btn-primary btn-sm">Save</button>
-          </div>
+  <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+  </script>
+  <script type="text/javascript" src="/scripts/app.js"></script>
+</head>
+
+<body>
+  <header>
+    <%- include('partials/_header') %>
+  </header>
+  <!--main-->
+  <h1><%= name %></h1>
+  <div class="container">
+    <div class="row">
+      <div class="side-container col-lg-3">
+        <div class="" id="choose-car">
+          <select class="mdb-select colorful-select dropdown-primary md-form" multiple searchable="Search here..">
+            <option value="" disabled selected>Choose your car</option>
+            <option value="1">Ferrari</option>
+            <option value="2">Mercedes-Benz</option>
+          </select>
+          <label class="mdb-main-label">Select a Car</label>
+          <button class="btn-save btn btn-primary btn-sm">Select</button>
         </div>
-        <div class="main-container col-lg-9">
-          <div class="row">
-            <!-- car One -->
-            <div class="col-md-5">
-              <% for (car in cars) { %>
-              <img class="img-fluid rounded mb-3 mb-md-0" width="200" height="121" alt="" src=<%= "cars[car]['make']" %> />
-               <% } %>
-            </div>
-            <div class="col-md-7">
-            <% for (car in selectCars) { %>
-
-            <h5><%= selectCars[car]["make"] %></h5>
-            <h5><%= selectCars[car]["year"] %></h5>
-            <h5><%= selectCars[car]["model"] %></h5>
-            <h5><%= selectCars[car]["mileage"] %></h5>
-            <p><%=  selectCars[car]["description"] %></p>
-            <% } %>
-            <a class="btn btn-primary" href="#">View Car</a>
-            </div>
-            <!--end of car-->
+        <div class="" id="choose-price">
+          <select class="mdb-select colorful-select dropdown-primary md-form" multiple searchable="Search here..">
+            <option value="" disabled selected>Order By</option>
+            <option value="1">Price Ascending</option>
+            <option value="2">Price Descending</option>
+          </select>
+          <label class="mdb-main-label">Order By</label>
+          <button class="btn-save btn btn-primary btn-sm">Save</button>
+        </div>
+      </div>
+      <div class="main-container col-lg-9">
+        <div class="row">
+          <!-- car One -->
+          <% for (car in cars) { %>
+          <div class="col-md-5">
+            <img class="img-fluid rounded mb-3 mb-md-0" width="200" height="121" alt=""
+              src="<% cars[car]['image_url'] %>" />
           </div>
+          <div class="col-md-7">
+
+            <h5>Year: <%= cars[car]["year"] %></h5>
+            <h5>Make <%= cars[car]["make"] %></h5>
+            <h5>Model: <%= cars[car]["model"] %></h5>
+            <h5>Milleage: <%= cars[car]["mileage"] %>km</h5>
+            <h5>Price: $<%= cars[car]["price"] %></h5>
+            <p>Description: <%= cars[car]["description"] %></p>
+            <a class="btn btn-primary" href="#">View Car</a>
+            <button class="btn btn-primary message-owner" type="button" id="<%=cars[car]['owner_id'] %>">Message
+              Buyer</button>
+          </div>
+          <% } %>
+          <!--end of car-->
         </div>
       </div>
     </div>
-    <!--footer-->
-    <footer>
-      <%- include('partials/_footer') %>
-    </footer>
-  </body>
+  </div>
+  <!--footer-->
+  <footer>
+    <%- include('partials/_footer') %>
+  </footer>
+</body>
+
 </html>
