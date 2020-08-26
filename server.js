@@ -7,6 +7,7 @@ const ENV = process.env.ENV || "development";
 const express = require("express");
 const cookieSession = require('cookie-session');
 const bodyParser = require("body-parser");
+const updateUrlQuery = require("./routes/helpers");
 
 // const sass = require("node-sass-middleware");
 const app = express();
@@ -76,13 +77,24 @@ app.use("/api/cars", carsRoutes(db));
 app.get("/", (req, res) => {
   db.query(`SELECT * FROM cars;`)
     .then(data => {
-      res.render('index', { cars: data.rows, name: req.session.name});
+      const sort = req.query.sort;
+
+      const cars = data.rows;
+      const carsMakeToFilterBy = req.query.make;
+      let selectCars = cars.filter(car => !carsMakeToFilterBy || car.make === carsMakeToFilterBy);
+      if(sort) {
+        selectCars = selectCars.sort((a,b) => {
+          return Number(sort) * (a.price - b.price);
+          })
+      }
+      res.render('index', { cars: cars, selectCars: selectCars, name: req.session.name, selected: carsMakeToFilterBy, updateUrlQuery, url: req.url });
     })
     .catch(err => {
       res
         .status(500)
         .json({ error: err.message });
     });
+
 });
 
 
@@ -126,34 +138,6 @@ app.post("/register", (req, res) => {
 
   //check if the password of the email is empty this is done through bootstrap ask if is OK?
   const { name, email, password, street, province, city, country , postal_code, phone} = req.body;
-  // console.log(req.body);
-  // const email = req.body.email;
-  // console.log(email);
-  // // const email = req.body.email;
-  // console.log('126', email);
-  // // const password = req.body.password;
-  // console.log('129', password);
-  // // const name = req.body.name;
-  // console.log('131', name);
-  // // const phone = req.body.phone;
-  // console.log('133', phone);
-  // // // const province = req.boby.province;
-  // console.log('135', province);
-  // // const city = req.body.city;
-  // console.log('137', city);
-  // // const country = req.body.country;
-  // console.log('138', country);
-  // // const street = req.body.street;
-  // console.log('140', address1);
-  // // const postal_code = req.body.postalCode;
-  // console.log('142', postal_code);
-  // const email = req.body.email;
-  // const password = req.body.password;
-
-  // if (password === "" || email === "") {
-  //   return res.send('Email or Password cannot be left empty');
-  // }
-  //check if user is in the database
   const text = `SELECT * FROM users WHERE email = $1;`;
   db.query(text, [email])
     .then(data => {
@@ -166,16 +150,19 @@ app.post("/register", (req, res) => {
         const values = [name, email, phone, password];
         db.query(text, values)
           .then(data  => {
-            console.log('!!!!!!!!!!!!!!!!!!!!!171!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+            console.log(data);
             //create a new address for the user id, users_id, province, city, country, street, postal_code)
-            //const text1 = `INSERT INTO addresses (country, province, city, street, postal_code) VALUES ($1, $2, $3, $4, $5) RETURNING *`;
-            //const values1 = [country, province, city, street, postal_code];
-            db.query(`INSERT INTO addresses (country, province, city, street, postal_code) VALUES ('CA', 'ON', 'Toronto', '123', '120') RETURNING *`);
-            console.log('!!!!!!!!!!!!!!!!!!!!!!174!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+            const id = data.rows[0].id;
+            const text1 = `INSERT INTO addresses (users_id, country, province, city, street, postal_code) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
+            const values1 = [id, country, province, city, street, postal_code];
+            return db.query(text1, values1);
+
+          }).then(data => {
             req.session.userId = data.rows[0].id;
             req.session.name = data.rows[0].name;
             res.redirect('/');
           });
+
       }
     })
     .catch(err => {
@@ -185,16 +172,15 @@ app.post("/register", (req, res) => {
     });
 
 });
-//////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 //logout rout
 app.post('/logout', (req, res) => {
-  delete req.session.userId;
+  req.session.userId = null;
+  req.session.name = null;
   res.redirect('/');
 });
+
+/////////////////////////////
 
 //register form route
 app.get('/register', (req, res) => {

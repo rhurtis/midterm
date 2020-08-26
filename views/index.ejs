@@ -21,25 +21,26 @@
     <header>
       <%- include('partials/_header') %>
     </header>
-    <!--main-->
+    <!---------------------------main--------------------------->
     <h1><%= name %></h1>
     <div class="container">
       <div class="row">
         <div class="side-container col-lg-3">
           <div class="" id="choose-car">
+            <!---------------------------filter model--------------------------->
             <select class="mdb-select colorful-select dropdown-primary md-form" multiple searchable="Search here..">
-              <option value="" disabled selected>Choose your car</option>
-              <option value="1">Ferrari</option>
-              <option value="2">Mercedes-Benz</option>
+              <option onclick="window.location.href='/'" value="" <%= !!selected && 'selected' %>>Choose your car</option>
+              <% for (car in cars) { %>
+              <option <%= selected === cars[car].make && 'selected' %> onclick="window.location.href='<%= updateUrlQuery("make",cars[car].make, url) %>'" value="<%= car %>"><%= cars[car]["make"] %></option>
+             <% } %>
             </select>
-            <label class="mdb-main-label">Select a Car</label>
-            <button class="btn-save btn btn-primary btn-sm">Select</button>
           </div>
+          <!---------------------------filter Price--------------------------->
           <div class="" id="choose-price">
             <select class="mdb-select colorful-select dropdown-primary md-form" multiple searchable="Search here..">
-              <option value="" disabled selected>Order By</option>
-              <option value="1">Price Ascending</option>
-              <option value="2">Price Descending</option>
+              <option onclick="window.location.href='/'" value="" <%= !!selected && 'selected' %>>Order By</option>
+              <option onclick="window.location.href='<%= updateUrlQuery("sort", -1, url) %>'">Price Ascending</option>
+              <option onclick="window.location.href='<%= updateUrlQuery("sort", 1, url) %>'">Price Descending</option>
             </select>
             <label class="mdb-main-label">Order By</label>
             <button class="btn-save btn btn-primary btn-sm">Save</button>
@@ -54,13 +55,13 @@
                <% } %>
             </div>
             <div class="col-md-7">
-            <% for (car in cars) { %>
+            <% for (car in selectCars) { %>
 
-            <h5><%= cars[car]["make"] %></h5>
-            <h5><%= cars[car]["year"] %></h5>
-            <h5><%= cars[car]["model"] %></h5>
-            <h5><%= cars[car]["mileage"] %></h5>
-            <p><%= cars[car]["description"] %></p>
+            <h5><%= selectCars[car]["make"] %></h5>
+            <h5><%= selectCars[car]["year"] %></h5>
+            <h5><%= selectCars[car]["model"] %></h5>
+            <h5><%= selectCars[car]["mileage"] %></h5>
+            <p><%=  selectCars[car]["description"] %></p>
             <% } %>
             <a class="btn btn-primary" href="#">View Car</a>
             </div>
