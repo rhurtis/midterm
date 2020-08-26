@@ -28,50 +28,87 @@
       <h2>Create a New Listing</h2>
     </div>
 
-    <div class="row">
+    <form class="login-form" method="POST" action="/createNewListing">
+
+      <!-- Input box for the make field-->
+      <div class="form-label-group">
+        <input type="text" name="make" id="make" class="form-control" placeholder="Vehicle Make"required autofocus>
+        <label for="inputMake">Make</label>
+      </div>
+      <!-- Input box for the model field-->
+      <div class="form-label-group">
+        <input type="text" name="model" id="model" class="form-control" placeholder="Vehicle Model"required autofocus>
+        <label for="inputModel">Model</label>
+      </div>
+      <!-- Input box for the year field-->
+      <div class="form-label-group">
+        <input type="text" name="year" id="year" class="form-control" placeholder="Vehicle Year"required autofocus>
+        <label for="inputYear">Year</label>
+      </div>
+       <!-- Input box for the mileage field-->
+       <div class="form-label-group">
+        <input type="text" name="mileage" id="mileage" class="form-control" placeholder="Vehicle Mileage"required autofocus>
+        <label for="inputMileage">Mileage</label>
+      </div>
+      <!-- Input box for the price field-->
+       <div class="form-label-group">
+        <input type="text" name="price" id="price" class="form-control" placeholder="Vehicle Price"required autofocus>
+        <label for="inputPrice">Price</label>
+      </div>
+      <!-- Input box for the email field-->
+       <div class="form-label-group">
+        <input type="text" name="country" id="country" class="form-control" placeholder="Country"required autofocus>
+        <label for="inputCountry">Country</label>
+      </div>
+
+      <!-- submission button -->
+      <button class="btn btn-primary btn-lg btn-block" type="submit">Submit Listing</button>
+    </form>
+
+    <!-- <div class="row" action = "/createNewListing">
 
       <div class="col-md-8 order-md-1">
         <h4 class="mb-3">Vehicle Details</h4>
-        <form class="needs-validation" novalidate>
+        <form class="needs-validation" novalidate action = "/createNewListing">
           <div class="row">
             <div class="col-md-6 mb-3">
               <label for="make">Make</label>
-              <input type="text" class="form-control" id="make" placeholder="ex: Toyota" value="" required>
+              <input type="text" class="form-control" id="make" placeholder="ex: Toyota" value="" required action = "/createNewListing">
               <div class="invalid-feedback">
                 Valid Make is Required
               </div>
             </div>
             <div class="col-md-6 mb-3">
               <label for="model">Model</label>
-              <input type="text" class="form-control" id="model" placeholder="ex: Corolla" value="" required>
+              <input type="text" class="form-control" id="model" placeholder="ex: Corolla" value="" required action = "/createNewListing">
               <div class="invalid-feedback">
                 Valid model name is required.
               </div>
             </div>
             <div class="col-md-6 mb-3">
               <label for="year">Year</label>
-              <input type="text" class="form-control" id="year" placeholder="ex: 2005" value="" required>
+              <input type="text" class="form-control" id="year" placeholder="ex: 2005" value="" required action = "/createNewListing">
               <div class="invalid-feedback">
                 Valid year is required.
               </div>
             </div>
             <div class="col-md-6 mb-3">
               <label for="mileage">Mileage (km)</label>
-              <input type="text" class="form-control" id="mileage" placeholder="ex: 195000km" value="" required>
+              <input type="text" class="form-control" id="mileage" placeholder="ex: 195000km" value="" required action = "/createNewListing">
               <div class="invalid-feedback">
                 Valid mileage is required.
               </div>
             </div>
             <div class="col-md-6 mb-3">
               <label for="price">Price</label>
-              <input type="text" class="form-control" id="price" placeholder="ex: $5000" value="" required>
+              <input type="text" class="form-control" id="price" placeholder="ex: $5000" value="" required action = "/createNewListing">
               <div class="invalid-feedback">
                 Valid price is required.
               </div>
             </div>
             <div class="col-md-6 mb-3">
               <label for="email">Email(customers will see this)</label>
-              <input type="text" class="form-control" id="email" placeholder="ex: you@example.com" value="" required>
+              <input type="text" class="form-control" id="email" placeholder="ex: you@example.com" value="" required action = "/createNewListing">
               <div class="invalid-feedback">
                 Valid email is required.
               </div>
@@ -144,7 +181,7 @@
           <button class="btn btn-primary btn-lg btn-block" type="submit">Submit Listing</button>
         </form>
       </div>
-    </div>
+    </div> -->
 
     <footer class="my-5 pt-5 text-muted text-center text-small">
       <p class="mb-1">&copy; 2017-2019 Company Name</p>

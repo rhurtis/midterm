@@ -24,3 +24,4 @@ BPU (Basic power upgrade): ETS 5"intercooler with 3" aluminum charge pipe', 8000
 (10, 'DMC', 'DeLorean', 1982, 1337, 'The DMC DeLorean (often referred to simply as the "DeLorean") is a sports car and the only automobile manufactured by John DeLoreans DeLorean Motor Company (DMC) for the American market from 1981 to 1983. The car was designed by Giorgetto Giugiaro and stood out for its gull-wing doors and brushed stainless-steel outer body panels. It became widely known for its disappointing lack of power and performance, which did not match the expectations created by its looks and price tag, but it is memorable for its appearances as the time machine in the Back to the Future media franchise after 1985.', 500000, 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/De_Lorean_DMC-12_at_Wollaton_Park%2C_Nottingham%2C_England.jpg/220px-De_Lorean_DMC-12_at_Wollaton_Park%2C_Nottingham%2C_England.jpg',10);
 
 
+
