@@ -23,7 +23,26 @@
     </header>
     <!--main-->
     <h1>my Garage</h1>
+        <div class="col-md-5">
+              <% for (car in cars) { %>
+              <img class="img-fluid rounded mb-3 mb-md-0" width="200" height="121" alt="" src=<%= "cars[car]['make']" %> />
+              <% } %>
+            </div>
+            <div class="col-md-7">
+            <% for (car in cars) { %>
 
+            <h5><%= cars[car]["make"] %></h5>
+            <h5><%= cars[car]["year"] %></h5>
+            <h5><%= cars[car]["model"] %></h5>
+            <h5><%= cars[car]["mileage"] %></h5>
+            <p><%= cars[car]["description"] %></p>
+            <form method = 'POST' action = '/myFavourite'>
+              <input name = 'carId' type = 'text' value = '<%= cars[car]["id"] %>'> </input>
+              <button id ='favourite' type = 'submit' class="btn btn-primary" href="#"> Remove from Favourites</button>
+            </form>
+            <% } %>
+
+        </div>
     <!--footer-->
     <footer>
       <%- include('partials/_footer') %>
