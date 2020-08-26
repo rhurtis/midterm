@@ -13,7 +13,7 @@ CREATE TABLE users (
 
 CREATE TABLE addresses (
   id SERIAL PRIMARY KEY NOT NULL,
-  users_id INTEGER,
+  users_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
   country VARCHAR(255) NOT NULL,
   province VARCHAR(255) NOT NULL,
   city VARCHAR(255) NOT NULL,
