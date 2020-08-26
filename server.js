@@ -322,10 +322,10 @@ app.post('/createNewListing', (req, res) => {
     // })
 >>>>>>> added db connection with forms
 
-      .catch(err => {
-        res
-          .status(500)
-          .json({ error: err.message });
+    .catch(err => {
+      res
+      .status(500)
+      .json({ error: err.message });
       });
 <<<<<<< cc5c2ad504d4c01d4a22e83d9c2fe57f23817d19
 });
