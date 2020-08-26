@@ -49,4 +49,23 @@ $(function() {
         </div>`)
     return false;
   });
+
+  // click event linking to message the seller
+  $('.message-owner').click(function() {
+    const owner_id = $(this).attr("id")
+    // console.log($(this).attr("id"))
+    // console.log("click")
+    const roomName = `room${owner_id}`
+    window.location.replace("http://localhost:8080/message")
+    socket.emit('room', { room: roomName });
+    // this.socket.on('joined', data => {
+    //   console.log('i have joined', data.room)
+    //   { room: data.room }
+    // })
+    // socket.on('chat', data =>
+    //   console.log(`received chat from ${data.from} from the message room ${data.room}`)
+    // )
+  })
+
 });
+

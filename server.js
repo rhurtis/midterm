@@ -53,16 +53,19 @@ const io = require('socket.io')(http)
 
 io.on('connection', socket => {
   console.log('A new user connected');
+  socket.on('room', (room) => {
+    console.log('room', room)
+    socket.join(room);
+    io.to(room).emit('hi');
+
+  })
 
   socket.on('chat message', (msg) => {
-
     // console.log('message: ' + msg);
     //db.query insert into
+
     socket.broadcast.emit('new message', msg);
-    // console.log('message: ' + msg);
-    //id of the user cookies
-    //seller id
-    //id of the car
+
   });
 })
 //broadcast the msgs to all the connected clients (resending it bk)
@@ -156,7 +159,7 @@ app.get('/checkout', (req, res) => {
 //message form route
 app.get('/message', function(req, res) {
   if (!req.session.name) {
-    res.status(403).send('<h1>Please make sure you are logged in! Click here to redirect back to  <a href= "/login" > the login page </a> or here to <a href= "/register" > register :) </h1>');
+    res.status(403).send('<h1>Please make sure you are logged in! Click here to redirect back to  <a href= "/login" > the login page </a> or here to <a href= "/register" > register. </h1>');
   } else {
     res.render("message", { name: req.session.name });
   }
