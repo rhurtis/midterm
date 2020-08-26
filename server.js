@@ -79,10 +79,7 @@ const widgetsRoutes = require("./routes/widgets");
 const messagesRoutes = require("./routes/messages");
 const loginRoutes = require("./routes/login");
 const carsRoutes = require("./routes/cars");
-<<<<<<< cc5c2ad504d4c01d4a22e83d9c2fe57f23817d19
 const { count } = require('console');
-=======
->>>>>>> added db connection with forms
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
 app.use("/api/users", usersRoutes(db));
@@ -235,7 +232,6 @@ app.get('/createNewListing', (req, res) => {
   res.render("createNewListing");
 });
 
-<<<<<<< cc5c2ad504d4c01d4a22e83d9c2fe57f23817d19
 //myGarage
 app.get('/myGarage', (req, res) => {
   //res.render("myGarage");
@@ -286,7 +282,10 @@ app.post('/myFavourite', (req, res) => {
         .then(data => {
           res.redirect('/myGarage')
         })
-=======
+
+});
+
+
 //post request for new listing form
 app.post('/createNewListing', (req, res) => {
   const body = req.body;
@@ -303,7 +302,6 @@ app.post('/createNewListing', (req, res) => {
   db.query(`INSERT INTO cars (make, model, year, mileage, price, image_url, owner_id)
   VALUES ($1, $2, $3, $4, $5, 'someURL',2);
   `, vehicleInformation)
-
     .then(data => {
       console.log('console log from newlisting post request',data);
       console.log('Here is the req.body', body);
@@ -313,26 +311,17 @@ app.post('/createNewListing', (req, res) => {
       console.log('Here is the mileage', mileage);
       console.log('Here is the price', price);
       console.log('Here is the country', country);
-      // return db.query(`INSERT INTO addresses (province, city, country, street, postal_code)
-      // VALUES ('Ontario', 'Toronto', $1, 'Brimorton', '1a1 241');`,[country])
+      return db.query(`INSERT INTO addresses (province, city, country, street, postal_code)
+      VALUES (3,'Ontario', 'Toronto', $1, 'Brimorton', '1a1 241');`,[country])
     })
-
-    // .then (data1 => {
-    //   console.log(country);
-    // })
->>>>>>> added db connection with forms
-
     .catch(err => {
       res
       .status(500)
       .json({ error: err.message });
       });
-<<<<<<< cc5c2ad504d4c01d4a22e83d9c2fe57f23817d19
 });
 
 
-=======
->>>>>>> added db connection with forms
 
 ///////////////////////////////////// THIS IS TO BE PUTED ON SEPERATE FOLDER /////////////////////////////////////
 
