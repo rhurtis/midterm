@@ -16,21 +16,20 @@
   <script src="/vendor/jquery-3.0.0.js"></script>
   <script src="/scripts/app.js"></script>
 
-  <!---------------------Font CSS-------------------------->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" />
-
 
   <title>Message</title>
   <!---------------------External CSS-------------------------->
   <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </head>
 
+
+
 <body>
   <script> window.author = "<%= name %>" </script>
   <header class="header">
     <%- include('partials/_header') %>
-  </header>
 
+  </header>
   <div class="chat-container">
     <div class="chat-header">
       <div class="logo">
@@ -79,8 +78,8 @@
           </button>
         </form>
 
-        <script src="/socket.io/socket.io.js"></script>
-        <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+        <!-- <script src="/socket.io/socket.io.js"></script>
+        <script src="https://code.jquery.com/jquery-1.11.1.js"></script> -->
       </div>
     </div>
   </div>
@@ -88,37 +87,11 @@
   <!-- <script>
     const socket = io('http://localhost:8080/message');
   </script> -->
-
+  <!--
   <script>
-    // $(function() {
-    //   let socket = io();
-    //   $('form').submit(function(e) {
-    //     e.preventDefault();
-    //     socket.emit('chat message', { msg: $('#msg').val(), author: "Hanzo" });
-    //     //author: would be going through the database for users email, will change when we have it so we can use template vars
-    //     $('#msg').val('');
-    //     return false;
-    //   });
+    const socket = io();
+  </script> -->
 
-    //   socket.on('new message', function(msg) {
-    //     console.log("msg", msg);
-    //     // $('#msgList').append($("#message-text").text(msg));
-    //     $('.message').append(`<div class="message-row other-message">
-    //       <div class="message-title">
-    //         👦<span> ${msg.author} </span>
-    //       </div>
-    //       <div class="message-text">
-    //         ${msg.msg}
-    //           </div>
-    //       <div class="message-time">
-    //         Aug 22
-    //           </div>
-    //     </div>`);
-
-    //   });
-    // });
-  </script>
-  <!--socket.on event handler on the client, receive th msg from the server jquery to get the list of msg then append msg to the chat box, -->
   <!-- footer-->
   <footer class="footer">
     <%- include('partials/_footer') %>
