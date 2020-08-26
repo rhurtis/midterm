@@ -55,12 +55,11 @@
         <input type="text" name="price" id="price" class="form-control" placeholder="Vehicle Price"required autofocus>
         <label for="inputPrice">Price</label>
       </div>
-      <!-- Input box for the email field-->
-       <div class="form-label-group">
-        <input type="text" name="country" id="country" class="form-control" placeholder="Country"required autofocus>
-        <label for="inputCountry">Country</label>
-      </div>
-
+      <!-- Choose picture file for submission.-->
+      <form action="/createNewListing">
+        <input type="file" id="myFile" name="filename">
+        <input type="submit">
+      </form>
       <!-- submission button -->
       <button class="btn btn-primary btn-lg btn-block" type="submit">Submit Listing</button>
     </form>

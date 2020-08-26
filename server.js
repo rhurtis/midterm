@@ -288,6 +288,11 @@ app.post('/myFavourite', (req, res) => {
 
 //post request for new listing form
 app.post('/createNewListing', (req, res) => {
+  // taking the current user from the cookies
+  // const currentUser = req.session.userId;
+  // checking cookie data
+  //const cookieData = req.session;
+  const currentUser = req.session.userId;
   const body = req.body;
   const make = req.body.make;
   const model = req.body.model;
@@ -295,12 +300,12 @@ app.post('/createNewListing', (req, res) => {
   const mileage = req.body.mileage;
   const price = req.body.price;
   //const email = req.body.email;
-  const country = req.body.country;
-  const vehicleInformation = [make, model, year, mileage, price];
+  // const country = req.body.country;
+  const vehicleInformation = [make, model, year, mileage, price, currentUser];
   // const sqlQuery = `INSERT INTO cars (id, make, model, year, mileage, price, image_url, owner_id)
   // VALUES (13,$1, $2, $3, $4, $5, 'someURL',2) ;`
   db.query(`INSERT INTO cars (make, model, year, mileage, price, image_url, owner_id)
-  VALUES ($1, $2, $3, $4, $5, 'someURL',2);
+  VALUES ($1, $2, $3, $4, $5, 'someURL', $6);
   `, vehicleInformation)
     .then(data => {
       console.log('console log from newlisting post request',data);
