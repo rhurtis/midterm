@@ -231,6 +231,27 @@ app.get('/message', function(req, res) {
 app.get('/createNewListing', (req, res) => {
   res.render("createNewListing");
 });
+//myGarage
+app.get('/myGarage', (req, res) => {
+  res.render("myGarage");
+});
+
+app.post('/myFavourite', (req, res) => {
+  console.log('here is the car id',req.body.carId)
+  db.query(`SELECT * FROM cars;`)
+      .then(data => {
+        const cars = data.rows;
+        //res.json({cars});
+        res.render('index', { cars: data.rows, name: req.session.name});
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+
+
+});
 ///////////////////////////////////// THIS IS TO BE PUTED ON SEPERATE FOLDER /////////////////////////////////////
 
 http.listen(PORT, () => {

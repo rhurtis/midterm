@@ -48,5 +48,3 @@ CREATE TABLE favourites (
   cars_id INTEGER NOT NULL,
   favourite BOOLEAN
 );
-
-
