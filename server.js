@@ -7,13 +7,10 @@ const ENV = process.env.ENV || "development";
 const express = require("express");
 const cookieSession = require('cookie-session');
 const bodyParser = require("body-parser");
-<<<<<<< eeadadedb5a8b848f832aeb0036d7d7e3f61954f
 const updateUrlQuery = require("./routes/helpers");
+const sass = require("node-sass-middleware");//Angel
 
 // const sass = require("node-sass-middleware");
-=======
-const sass = require("node-sass-middleware");
->>>>>>> revised users seeds, added app.js for messenger app and revised server.js to connect wtih css
 const app = express();
 const morgan = require('morgan');
 const path = require('path');
@@ -39,7 +36,6 @@ app.use(morgan('dev'));
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use(sass({
   /* Options */
   src: path.join(__dirname, 'styles'),
@@ -58,11 +54,11 @@ const io = require('socket.io')(http)
 io.on('connection', socket => {
   console.log('A new user connected');
   socket.on('room', (room) => {
-    console.log('room', room)
+    console.log('room', room);
     socket.join(room);
     io.to(room).emit('hi');
 
-  })
+  });
 
   socket.on('chat message', (msg) => {
     // console.log('message: ' + msg);
@@ -71,12 +67,10 @@ io.on('connection', socket => {
     socket.broadcast.emit('new message', msg);
 
   });
-<<<<<<< eeadadedb5a8b848f832aeb0036d7d7e3f61954f
+
 });
-=======
-})
 //broadcast the msgs to all the connected clients (resending it bk)
->>>>>>> revised users seeds, added app.js for messenger app and revised server.js to connect wtih css
+
 
 // Separated Routes for each Resource
 // Note: Feel free to replace the example routes below with your own
@@ -105,14 +99,16 @@ app.get("/", (req, res) => {
   db.query(`SELECT * FROM cars;`)
     .then(data => {
       const sort = req.query.sort;
-
+      console.log("printing Sort", sort);
       const cars = data.rows;
+      console.log("printing cars", cars);
       const carsMakeToFilterBy = req.query.make;
+      console.log("printing carsbyfil", carsMakeToFilterBy);
       let selectCars = cars.filter(car => !carsMakeToFilterBy || car.make === carsMakeToFilterBy);
-      if(sort) {
+      if (sort) {
         selectCars = selectCars.sort((a,b) => {
           return Number(sort) * (a.price - b.price);
-          })
+        });
       }
       res.render('index', { cars: cars, selectCars: selectCars, name: req.session.name, selected: carsMakeToFilterBy, updateUrlQuery, url: req.url });
     })
@@ -230,8 +226,7 @@ app.get('/message', function(req, res) {
     res.render("message", { name: req.session.name });
   }
 
-})
-
+});
 //new listing form route
 app.get('/createNewListing', (req, res) => {
   res.render("createNewListing");
