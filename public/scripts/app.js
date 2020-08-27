@@ -1,20 +1,9 @@
 
-// $(() => {
-//   // $.ajax({
-//   //   method: "GET",
-//   //   url: "/api/users"
-//   // }).done((users) => {
-//   //   for (user of users) {
-//   //     $("<div>").text(user.name).appendTo($("body"));
-//   //   }
-//   // });;
-// });
-
 //socket.on event handler on the client, receive th msg from the server jquery to get the list of msg then append msg to the chat box
 
 $(function() {
   let socket = io();
-  $('form').submit(function(e) {
+  $('.msg-text').submit(function(e) {
     let timeNow = new Date().toLocaleString();
     e.preventDefault();
     // console.log("window.author", window.author)

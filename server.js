@@ -8,9 +8,11 @@ const express = require("express");
 const cookieSession = require('cookie-session');
 const bodyParser = require("body-parser");
 const updateUrlQuery = require("./routes/helpers");
-const sass = require("node-sass-middleware");//Angel
-
-// const sass = require("node-sass-middleware");
+const sass = require("node-sass-middleware");
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+const salt = bcrypt.genSaltSync(saltRounds);
+const io = require('socket.io')(http);
 const app = express();
 const morgan = require('morgan');
 const path = require('path');
@@ -20,7 +22,6 @@ app.use(cookieSession({
   name: 'session',
   keys: ['userId']
 }));
-
 
 // PG database client/connection setup
 const { Pool } = require('pg');
@@ -32,8 +33,6 @@ db.connect();
 // 'dev' = Concise output colored by response status for development use.
 //         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
 app.use(morgan('dev'));
-
-
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(sass({
@@ -42,35 +41,23 @@ app.use(sass({
   dest: path.join(__dirname, 'public', 'styles'),
   debug: true,
   outputStyle: 'compressed',
-  prefix: '/styles'  // Where prefix is at <link rel="stylesheets" href="prefix/style.css"/>
+  prefix: '/styles'
 }));
-
 
 app.use(express.static(path.join(__dirname, "public")));
 
-
-const io = require('socket.io')(http)
-
+//broadcast the msgs to all the connected clients (resending it bk)
 io.on('connection', socket => {
   console.log('A new user connected');
   socket.on('room', (room) => {
-    console.log('room', room);
     socket.join(room);
     io.to(room).emit('hi');
-
   });
 
   socket.on('chat message', (msg) => {
-    // console.log('message: ' + msg);
-    //db.query insert into
-
     socket.broadcast.emit('new message', msg);
-
   });
-
 });
-//broadcast the msgs to all the connected clients (resending it bk)
-
 
 // Separated Routes for each Resource
 // Note: Feel free to replace the example routes below with your own
@@ -89,7 +76,6 @@ app.use("/api/login", loginRoutes(db));
 app.use("/api/cars", carsRoutes(db));
 // Note: mount other resources here, using the same pattern above
 
-
 // Home page
 // Warning: avoid creating more routes in this file!
 // Separate them into separate routes files (see above).
@@ -102,11 +88,7 @@ app.get("/", (req, res) => {
   `)
     .then(data => {
       const sort = req.query.sort;
-      console.log("printing Sort", sort);
-      const cars = data.rows;
-      console.log("printing cars", cars);
       const carsMakeToFilterBy = req.query.make;
-      console.log("printing carsbyfil", carsMakeToFilterBy);
       let selectCars = cars.filter(car => !carsMakeToFilterBy || car.make === carsMakeToFilterBy);
       if (sort) {
         selectCars = selectCars.sort((a,b) => {
@@ -120,16 +102,13 @@ app.get("/", (req, res) => {
         .status(500)
         .json({ error: err.message });
     });
-
 });
 
 
-///////////////////////////////////// THIS IS TO BE PUTED ON SEPERATE FOLDER /////////////////////////////////////
 
 //login form route
 app.get('/login', (req, res) => {
-
-  res.render("login");
+  res.render("login", { name: req.session.name});
 });
 
 ///loging POST route
@@ -143,12 +122,11 @@ app.post('/login', (req, res) => {
       if (data.rows.length === 0) {
         res.status(400).send("Email does not exist");
         //ched if the passwords do match
-      } else if (password === data.rows[0].password) {
+      } else if (bcrypt.compareSync(password, data.rows[0].password)) {
         req.session.userId = data.rows[0].id;
         req.session.name = data.rows[0].name;//put the name in the header
         res.redirect('/');
       } else {
-        console.log('102');
         res.status(400).send("Email password combination do not much");
       }
     })
@@ -161,9 +139,9 @@ app.post('/login', (req, res) => {
 
 //register POST route
 app.post("/register", (req, res) => {
-
   //check if the password of the email is empty this is done through bootstrap ask if is OK?
-  const { name, email, password, street, province, city, country , postal_code, phone} = req.body;
+  const { name, email, street, province, city, country , postal_code, phone} = req.body;
+  const password = bcrypt.hashSync(req.body.password, salt)
   const text = `SELECT * FROM users WHERE email = $1;`;
   db.query(text, [email])
     .then(data => {
@@ -171,24 +149,20 @@ app.post("/register", (req, res) => {
       if (data.rows.length !== 0) {
         res.send('An user with this email already excists, please change email or login');
       } else {
-        //create a new user id, name, email, phone, password
+        //create a new user
         const text = `INSERT INTO users ( name, email, phone, password) VALUES ($1, $2, $3, $4) RETURNING *;`;
         const values = [name, email, phone, password];
         db.query(text, values)
           .then(data  => {
-            console.log(data);
-            //create a new address for the user id, users_id, province, city, country, street, postal_code)
-            const id = data.rows[0].id;
-            const text1 = `INSERT INTO addresses (users_id, country, province, city, street, postal_code) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
-            const values1 = [id, country, province, city, street, postal_code];
+            //create a new address
+            const users_id = data.rows[0].id;
+            const text1 = `INSERT INTO addresses (users_id, province, city, country, street, postal_code) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
+            const values1 = [users_id, province, city, country, street, postal_code];
             return db.query(text1, values1);
-
           }).then(data => {
             req.session.userId = data.rows[0].id;
             req.session.name = data.rows[0].name;
-            res.redirect('/');
           });
-
       }
     })
     .catch(err => {
@@ -196,7 +170,6 @@ app.post("/register", (req, res) => {
         .status(500)
         .json({ error: err.message });
     });
-
 });
 
 //logout rout
@@ -210,16 +183,9 @@ app.post('/logout', (req, res) => {
 
 //register form route
 app.get('/register', (req, res) => {
-  res.render("register");
+  res.render("register", { name: req.session.name});
 });
-//cart form route
-app.get('/cart', (req, res) => {
-  res.render("cart");
-});
-//checkout form route
-app.get('/checkout', (req, res) => {
-  res.render("checkout");
-});
+
 
 //message form route
 app.get('/message', function(req, res) {
@@ -228,16 +194,14 @@ app.get('/message', function(req, res) {
   } else {
     res.render("message", { name: req.session.name });
   }
-
 });
 //new listing form route
 app.get('/createNewListing', (req, res) => {
-  res.render("createNewListing");
+  res.render("createNewListing", { name: req.session.name});
 });
 
 //myGarage
 app.get('/myGarage', (req, res) => {
-  //res.render("myGarage");
   const currentUserId = req.session.userId;
   const queryValues = [currentUserId];
   db.query(`
@@ -248,8 +212,6 @@ app.get('/myGarage', (req, res) => {
   `, queryValues)
   .then(data => {
     const cars = data.rows;
-    console.log('here is the get for myGarage,',cars)
-    //res.json({cars});
     res.render('myGarage', { cars: data.rows, name: req.session.name});
   })
   .catch(err => {
@@ -261,10 +223,8 @@ app.get('/myGarage', (req, res) => {
 
 // post request for favourites
 app.post('/myFavourite', (req, res) => {
-  console.log('here is the car id',req.body.carId)
   const currentUserId = req.session.userId;
   const carId = req.body.carId;
-  console.log('here is the current car',carId);
   const infoArray = [currentUserId, carId];
   db.query(`
   SELECT * FROM favourites
@@ -272,7 +232,6 @@ app.post('/myFavourite', (req, res) => {
   AND favourites.cars_id = $2; `, infoArray)
       .then(data => {
         const cars = data.rows;
-        //res.json({cars});
         if (data.rows.length) {
           return db.query(`UPDATE favourites SET favourite = $1 WHERE id = $2;`,[!data.rows[0].favourite, data.rows[0].id])
         } else {
@@ -285,16 +244,10 @@ app.post('/myFavourite', (req, res) => {
         .then(data => {
           res.redirect('/myGarage')
         })
-
 });
-
 
 //post request for new listing form
 app.post('/createNewListing', (req, res) => {
-  // taking the current user from the cookies
-  // const currentUser = req.session.userId;
-  // checking cookie data
-  //const cookieData = req.session;
   const currentUser = req.session.userId;
   const body = req.body;
   const make = req.body.make;
@@ -302,26 +255,12 @@ app.post('/createNewListing', (req, res) => {
   const year = req.body.year;
   const mileage = req.body.mileage;
   const price = req.body.price;
-  //const email = req.body.email;
-  // const country = req.body.country;
-  const vehicleInformation = [make, model, year, mileage, price, currentUser];
-  // const sqlQuery = `INSERT INTO cars (id, make, model, year, mileage, price, image_url, owner_id)
-  // VALUES (13,$1, $2, $3, $4, $5, 'someURL',2) ;`
-  db.query(`INSERT INTO cars (make, model, year, mileage, price, image_url, availability, owner_id)
-  VALUES ($1, $2, $3, $4, $5, 'someURL', 'true', $6);
+  const description = req.body.description;
+  const vehicleInformation = [year, make, model, mileage, price, currentUser, description];
+  db.query(`INSERT INTO cars (year, make, model, mileage, price, image_url, availability, owner_id, description)
+  VALUES ($1, $2, $3, $4, $5, 'someURL', 'true', $6, $7);
   `, vehicleInformation)
     .then(data => {
-      console.log('console log from newlisting post request',data);
-      console.log('Here is the req.body', body);
-      console.log('Here is the make', make);
-      console.log('Here is the model', model);
-      console.log('Here is the year', year);
-      console.log('Here is the mileage', mileage);
-      console.log('Here is the price', price);
-      // console.log('Here is the country', country);
-      console.log('cookie data:', currentUser);
-      // return db.query(`INSERT INTO addresses (province, city, country, street, postal_code)
-      // VALUES ('Ontario', 'Toronto', $1, 'Brimorton', '1a1 241');`,[country])
       res.redirect('/');
     })
     .catch(err => {
@@ -331,13 +270,10 @@ app.post('/createNewListing', (req, res) => {
       });
 });
 
-
 // post request for removing listing
 app.post('/removeListing', (req, res) => {
-  console.log('here is the car id',req.body.carId)
   const currentUserId = req.session.userId;
   const carId = req.body.carId;
-  console.log('here is the current car',carId);
   const infoArray = [currentUserId, carId];
   db.query(`
   SELECT * FROM cars
@@ -345,7 +281,7 @@ app.post('/removeListing', (req, res) => {
   AND cars.availability = true; `, [currentUserId])
       .then(data => {
         const cars = data.rows;
-        //res.json({cars});
+
         if (data.rows.length) {
           return db.query(`UPDATE cars SET availability = $1 WHERE id = $2;`,[!data.rows[0].availability, data.rows[0].id])
         }
@@ -360,9 +296,6 @@ app.post('/removeListing', (req, res) => {
           .json({ error: err.message });
       });
 });
-
-
-///////////////////////////////////// THIS IS TO BE PUTED ON SEPERATE FOLDER /////////////////////////////////////
 
 http.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);

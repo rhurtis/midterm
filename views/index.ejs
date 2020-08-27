@@ -6,7 +6,7 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
   <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
   <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
   <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
@@ -32,7 +32,7 @@
           <div class="" id="choose-car">
             <!---------------------------filter model--------------------------->
             <select class="mdb-select colorful-select dropdown-primary md-form" multiple searchable="Search here..">
-              <option onclick="window.location.href='/'" value="" <%= !!selected && 'selected' %>>Choose your car</option>
+              <option onclick="window.location.href='/'" value="" <%= !!selected && 'selected' %>>Clear</option>
               <% for (car in cars) { %>
               <option <%= selected === cars[car].make && 'selected' %> onclick="window.location.href='<%= updateUrlQuery("make",cars[car].make, url) %>'" value="<%= car %>"><%= cars[car]["make"] %></option>
              <% } %>
@@ -41,12 +41,10 @@
           <!---------------------------filter Price--------------------------->
           <div class="" id="choose-price">
             <select class="mdb-select colorful-select dropdown-primary md-form" multiple searchable="Search here..">
-              <option onclick="window.location.href='/'" value="" <%= !!selected && 'selected' %>>Order By</option>
+              <option onclick="window.location.href='/'" value="" <%= !!selected && 'selected' %>>Clear</option>
               <option onclick="window.location.href='<%= updateUrlQuery("sort", -1, url) %>'">Price Ascending</option>
               <option onclick="window.location.href='<%= updateUrlQuery("sort", 1, url) %>'">Price Descending</option>
             </select>
-            <label class="mdb-main-label">Order By</label>
-            <button class="btn-save btn btn-primary btn-sm">Save</button>
           </div>
         </div>
         <!---------------------------cars container--------------------------->
@@ -56,24 +54,22 @@
             <% for (car in selectCars) { %>
               <div class="col-md-5">
                 <img class="img-fluid rounded mb-3 mb-md-0" width="200" height="121" alt=""
-                  src="<% selectCars[car]['image_url'] %>" />
+                  src="<%= selectCars[car]['image_url'] %>" />
               </div>
               <div class="col-md-7">
-                <h5>Year: <%= selectCars[car]["make"] %></h5>
-                <h5>Make <%= selectCars[car]["year"] %></h5>
+                <h5>Year: <%= selectCars[car]["year"] %></h5>
+                <h5>Make: <%= selectCars[car]["make"] %></h5>
                 <h5>Model: <%= selectCars[car]["model"] %></h5>
-                <h5>Milleage: <%= selectCars[car]["mileage"] %>km</h5>
+                <h5>Mileage: <%= selectCars[car]["mileage"] %>km</h5>
                 <h5>Price: $<%= selectCars[car]["price"] %></h5>
                 <p>Description: <%= selectCars[car]["description"] %></p>
-                <a class="btn btn-primary" href="#">View Car</a>
                 <button class="btn btn-primary message-owner" type="button" id="<%=selectCars[car]['owner_id'] %>">Message
-                  Buyer</button>
-                  <a class="btn btn-primary" href="#">View Car</a>
-                  <form method = 'POST' action = '/myFavourite'>
-                  <input name = 'carId' type = 'text' value = '<%= selectCars[car]["id"] %>'> </input>
-                 <button id ='favourite' type = 'submit' class="btn btn-primary" href="#">Favourite Car</button>
-              </form>
-              <form method = 'POST' action = '/removeListing'>
+                  Seller</button>
+                   <form method = 'POST' action = '/myFavourite'>
+                      <input name = 'carId' type = 'text' value = '<%= selectCars[car]["id"] %>'> </input>
+                      <button id ='favourite' type = 'submit' class="btn btn-primary" >Favourite Car</button>
+                   </form>
+                <form method = 'POST' action = '/removeListing'>
                 <input name = 'carId' type = 'text' value = '<%= selectCars[car]["id"] %>'> </input>
                 <button id ='removeListing' type = 'submit' class="btn btn-primary" href="#">The Car is Sold</button>
                 </form>
@@ -81,8 +77,6 @@
               <% } %>
             <!--------------------------- end cars--------------------------->
           </div>
-          <% } %>
-          <!--end of car-->
         </div>
       </div>
     </div>
