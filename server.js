@@ -238,13 +238,14 @@ app.get('/myGarage', (req, res) => {
   const currentUserId = req.session.userId;
   const queryValues = [currentUserId];
   db.query(`
-  SELECT make, year, model, mileage, description
+  SELECT cars.id, make, year, model, mileage, description
   FROM cars
-  JOIN favourites ON cars.owner_id = favourites.user_id
+  JOIN favourites ON cars.id = favourites.cars_id
   WHERE favourites.user_id = $1 AND favourites.favourite = 'true';
   `, queryValues)
   .then(data => {
     const cars = data.rows;
+    console.log('here is the get for myGarage,',cars)
     //res.json({cars});
     res.render('myGarage', { cars: data.rows, name: req.session.name});
   })
@@ -255,11 +256,12 @@ app.get('/myGarage', (req, res) => {
   });
 });
 
-// posting request for favourites
+// post request for favourites
 app.post('/myFavourite', (req, res) => {
   console.log('here is the car id',req.body.carId)
   const currentUserId = req.session.userId;
   const carId = req.body.carId;
+  console.log('here is the current car',carId);
   const infoArray = [currentUserId, carId];
   db.query(`
   SELECT * FROM favourites
@@ -274,7 +276,7 @@ app.post('/myFavourite', (req, res) => {
           return db.query(`
           INSERT INTO favourites (user_id, cars_id, favourite)
           VALUES ($1, $2, true)
-          `,infoArray)
+          `, infoArray)
         }
       })
         .then(data => {
@@ -286,9 +288,10 @@ app.post('/myFavourite', (req, res) => {
           .status(500)
           .json({ error: err.message });
       });
-
-
 });
+
+
+
 ///////////////////////////////////// THIS IS TO BE PUTED ON SEPERATE FOLDER /////////////////////////////////////
 
 http.listen(PORT, () => {
