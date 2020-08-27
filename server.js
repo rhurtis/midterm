@@ -23,6 +23,10 @@ app.use(cookieSession({
   keys: ['userId']
 }));
 
+//getting picture to upload
+app.use(express.static('images/'));
+
+
 // PG database client/connection setup
 const { Pool } = require('pg');
 const dbParams = require('./lib/db.js');
@@ -87,7 +91,7 @@ app.get("/", (req, res) => {
   WHERE availability = 'true';
   `)
     .then(data => {
-      console.log('here is the mai page data:',data)
+      //console.log('here is the mai page data:',data)
       const cars = data.rows;
       const sort = req.query.sort;
       const carsMakeToFilterBy = req.query.make;
@@ -259,9 +263,12 @@ app.post('/createNewListing', (req, res) => {
   const mileage = req.body.mileage;
   const price = req.body.price;
   const description = req.body.description;
-  const vehicleInformation = [year, make, model, mileage, price, currentUser, description];
+  //console.log('HERE IS THE NEW LISTING OBJECT',body);
+  const uploadedPic = 'http://localhost:8080/'+req.body.filename;
+
+  const vehicleInformation = [year, make, model, mileage, price, uploadedPic, currentUser, description];
   db.query(`INSERT INTO cars (year, make, model, mileage, price, image_url, availability, owner_id, description)
-  VALUES ($1, $2, $3, $4, $5, 'someURL', 'true', $6, $7);
+  VALUES ($1, $2, $3, $4, $5, $6, 'true', $7, $8);
   `, vehicleInformation)
     .then(data => {
       res.redirect('/');
