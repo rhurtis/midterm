@@ -33,14 +33,15 @@
       <div class="row">
         <div class="side-container col-lg-3">
           <div class="" id="choose-car">
-            <!---------------------------filter model--------------------------->
-            <select class="mdb-select colorful-select dropdown-primary md-form" multiple searchable="Search here..">
-              <option onclick="window.location.href='/'" value="" <%= !!selected && 'selected' %>>Choose your car</option>
-              <% for (car in cars) { %>
-              <option <%= selected === cars[car].make && 'selected' %> onclick="window.location.href='<%= updateUrlQuery("make",cars[car].make, url) %>'" value="<%= car %>"><%= cars[car]["make"] %></option>
-             <% } %>
-            </select>
-          </div>
+            <div class="" id="choose-car">
+              <!---------------------------filter model--------------------------->
+              <select class="mdb-select colorful-select dropdown-primary md-form" multiple searchable="Search here..">
+                <option onclick="window.location.href='/'" value="" <%= !!selected && 'selected' %>>Choose your car</option>
+                <% for (car in cars) { %>
+                <option <%= selected === cars[car].make && 'selected' %> onclick="window.location.href='<%= updateUrlQuery("make",cars[car].make, url) %>'" value="<%= car %>"><%= cars[car]["make"] %></option>
+               <% } %>
+              </select>
+            </div>
           <!---------------------------filter Price--------------------------->
           <div class="" id="choose-price">
             <select class="mdb-select colorful-select dropdown-primary md-form" multiple searchable="Search here..">

@@ -50,16 +50,16 @@ app.use(sass({
 app.use(express.static(path.join(__dirname, "public")));
 
 
-const io = require('socket.io')(http)
+const io = require('socket.io')(http);
 
 io.on('connection', socket => {
   console.log('A new user connected');
   socket.on('room', (room) => {
-    console.log('room', room)
+    console.log('room', room);
     socket.join(room);
     io.to(room).emit('hi');
 
-  })
+  });
 
   socket.on('chat message', (msg) => {
     // console.log('message: ' + msg);
@@ -68,7 +68,7 @@ io.on('connection', socket => {
     socket.broadcast.emit('new message', msg);
 
   });
-})
+});
 //broadcast the msgs to all the connected clients (resending it bk)
 
 
@@ -99,14 +99,13 @@ app.get("/", (req, res) => {
   db.query(`SELECT * FROM cars;`)
     .then(data => {
       const sort = req.query.sort;
-
       const cars = data.rows;
       const carsMakeToFilterBy = req.query.make;
       let selectCars = cars.filter(car => !carsMakeToFilterBy || car.make === carsMakeToFilterBy);
-      if(sort) {
+      if (sort) {
         selectCars = selectCars.sort((a,b) => {
           return Number(sort) * (a.price - b.price);
-          })
+        });
       }
       res.render('index', { cars: cars, selectCars: selectCars, name: req.session.name, selected: carsMakeToFilterBy, updateUrlQuery, url: req.url });
     })
