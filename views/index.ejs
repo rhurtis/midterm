@@ -56,7 +56,7 @@
             <% for (car in selectCars) { %>
               <div class="col-md-5">
                 <img class="img-fluid rounded mb-3 mb-md-0" width="200" height="121" alt=""
-                  src="<% cars[car]['image_url'] %>" />
+                  src="<% selectCars[car]['image_url'] %>" />
               </div>
               <div class="col-md-7">
                 <h5>Year: <%= selectCars[car]["make"] %></h5>
@@ -66,8 +66,13 @@
                 <h5>Price: $<%= selectCars[car]["price"] %></h5>
                 <p>Description: <%= selectCars[car]["description"] %></p>
                 <a class="btn btn-primary" href="#">View Car</a>
-                <button class="btn btn-primary message-owner" type="button" id="<%=cars[car]['owner_id'] %>">Message
+                <button class="btn btn-primary message-owner" type="button" id="<%=selectCars[car]['owner_id'] %>">Message
                   Buyer</button>
+                  <a class="btn btn-primary" href="#">View Car</a>
+                  <form method = 'POST' action = '/myFavourite'>
+                  <input name = 'carId' type = 'text' value = '<%= selectCars[car]["id"] %>'> </input>
+                 <button id ='favourite' type = 'submit' class="btn btn-primary" href="#">Favourite Car</button>
+              </form>
               </div>
               <% } %>
             <!--------------------------- end cars--------------------------->

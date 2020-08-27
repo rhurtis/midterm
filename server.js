@@ -231,6 +231,67 @@ app.get('/message', function(req, res) {
 app.get('/createNewListing', (req, res) => {
   res.render("createNewListing");
 });
+
+//myGarage
+app.get('/myGarage', (req, res) => {
+  //res.render("myGarage");
+  const currentUserId = req.session.userId;
+  const queryValues = [currentUserId];
+  db.query(`
+  SELECT cars.id, make, year, model, mileage, description
+  FROM cars
+  JOIN favourites ON cars.id = favourites.cars_id
+  WHERE favourites.user_id = $1 AND favourites.favourite = 'true';
+  `, queryValues)
+  .then(data => {
+    const cars = data.rows;
+    console.log('here is the get for myGarage,',cars)
+    //res.json({cars});
+    res.render('myGarage', { cars: data.rows, name: req.session.name});
+  })
+  .catch(err => {
+    res
+      .status(500)
+      .json({ error: err.message });
+  });
+});
+
+// post request for favourites
+app.post('/myFavourite', (req, res) => {
+  console.log('here is the car id',req.body.carId)
+  const currentUserId = req.session.userId;
+  const carId = req.body.carId;
+  console.log('here is the current car',carId);
+  const infoArray = [currentUserId, carId];
+  db.query(`
+  SELECT * FROM favourites
+  WHERE favourites.user_id = $1
+  AND favourites.cars_id = $2; `, infoArray)
+      .then(data => {
+        const cars = data.rows;
+        //res.json({cars});
+        if (data.rows.length) {
+          return db.query(`UPDATE favourites SET favourite = $1 WHERE id = $2;`,[!data.rows[0].favourite, data.rows[0].id])
+        } else {
+          return db.query(`
+          INSERT INTO favourites (user_id, cars_id, favourite)
+          VALUES ($1, $2, true)
+          `, infoArray)
+        }
+      })
+        .then(data => {
+          res.redirect('/myGarage')
+        })
+
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+});
+
+
+
 ///////////////////////////////////// THIS IS TO BE PUTED ON SEPERATE FOLDER /////////////////////////////////////
 
 http.listen(PORT, () => {
