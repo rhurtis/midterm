@@ -12,11 +12,11 @@ const sass = require("node-sass-middleware");
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const salt = bcrypt.genSaltSync(saltRounds);
-const io = require('socket.io')(http);
 const app = express();
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
 const morgan = require('morgan');
 const path = require('path');
-const http = require('http').createServer(app);
 
 app.use(cookieSession({
   name: 'session',
@@ -87,6 +87,8 @@ app.get("/", (req, res) => {
   WHERE availability = 'true';
   `)
     .then(data => {
+      console.log('here is the mai page data:',data)
+      const cars = data.rows;
       const sort = req.query.sort;
       const carsMakeToFilterBy = req.query.make;
       let selectCars = cars.filter(car => !carsMakeToFilterBy || car.make === carsMakeToFilterBy);
@@ -162,6 +164,7 @@ app.post("/register", (req, res) => {
           }).then(data => {
             req.session.userId = data.rows[0].id;
             req.session.name = data.rows[0].name;
+            res.redirect('/login');
           });
       }
     })
