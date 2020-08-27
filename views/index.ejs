@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
     <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+    <!--fonts-->
+    <script src=“https://kit.fontawesome.com/a076d05399.js”></script>
     <!------------------------------Socet------------------------------->
     <script src="/socket.io/socket.io.js"></script>
     <script> var socket = io(); </script>
@@ -25,8 +27,8 @@
       <%- include('partials/_header') %>
     </header>
     <!---------------------------main--------------------------->
-    <h1><%= name %></h1>
-    <div class="container">
+
+    <div class="container id='mainContainer'">
       <div class="row">
         <div class="side-container col-lg-3">
           <div class="" id="choose-car">
