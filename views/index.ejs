@@ -73,6 +73,10 @@
                   <input name = 'carId' type = 'text' value = '<%= selectCars[car]["id"] %>'> </input>
                  <button id ='favourite' type = 'submit' class="btn btn-primary" href="#">Favourite Car</button>
               </form>
+              <form method = 'POST' action = '/removeListing'>
+                <input name = 'carId' type = 'text' value = '<%= selectCars[car]["id"] %>'> </input>
+                <button id ='removeListing' type = 'submit' class="btn btn-primary" href="#">The Car is Sold</button>
+                </form>
               </div>
               <% } %>
             <!--------------------------- end cars--------------------------->

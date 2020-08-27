@@ -332,6 +332,35 @@ app.post('/createNewListing', (req, res) => {
 });
 
 
+// post request for removing listing
+app.post('/removeListing', (req, res) => {
+  console.log('here is the car id',req.body.carId)
+  const currentUserId = req.session.userId;
+  const carId = req.body.carId;
+  console.log('here is the current car',carId);
+  const infoArray = [currentUserId, carId];
+  db.query(`
+  SELECT * FROM cars
+  WHERE cars.owner_id = $1
+  AND cars.availability = true; `, [currentUserId])
+      .then(data => {
+        const cars = data.rows;
+        //res.json({cars});
+        if (data.rows.length) {
+          return db.query(`UPDATE cars SET availability = $1 WHERE id = $2;`,[!data.rows[0].availability, data.rows[0].id])
+        }
+      })
+        .then(data => {
+          res.redirect('/')
+        })
+
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+});
+
 
 ///////////////////////////////////// THIS IS TO BE PUTED ON SEPERATE FOLDER /////////////////////////////////////
 
