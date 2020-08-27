@@ -8,6 +8,7 @@ const express = require("express");
 const cookieSession = require('cookie-session');
 const bodyParser = require("body-parser");
 const updateUrlQuery = require("./routes/helpers");
+const sass = require("node-sass-middleware");//Angel
 
 // const sass = require("node-sass-middleware");
 const app = express();
@@ -34,22 +35,45 @@ app.use(morgan('dev'));
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(sass({
-//   src: __dirname + "/styles",
-//   dest: __dirname + "/public/styles",
-//   debug: true,
-//   outputStyle: 'expanded'
-// }));
-
+app.use(sass({
+  /* Options */
+  src: path.join(__dirname, 'styles'),
+  dest: path.join(__dirname, 'public', 'styles'),
+  debug: true,
+  outputStyle: 'compressed',
+  prefix: '/styles'  // Where prefix is at <link rel="stylesheets" href="prefix/style.css"/>
+}));
 app.use(express.static(path.join(__dirname, "public")));
 
-const io = require('socket.io')(http)
+// const io = require('socket.io')(http);
+// io.on('connection', socket => {
+//   console.log('A new user connected');
+//   socket.on('chat message', (msg) => {
+//     console.log('message: ' + msg);
+//   });
+// });
+
+const io = require('socket.io')(http);
+
 io.on('connection', socket => {
   console.log('A new user connected');
+  socket.on('room', (room) => {
+    console.log('room', room);
+    socket.join(room);
+    io.to(room).emit('hi');
+
+  });
+
   socket.on('chat message', (msg) => {
-    console.log('message: ' + msg);
+    // console.log('message: ' + msg);
+    //db.query insert into
+
+    socket.broadcast.emit('new message', msg);
+
   });
 });
+//broadcast the msgs to all the connected clients (resending it bk)
+
 
 // Separated Routes for each Resource
 // Note: Feel free to replace the example routes below with your own
@@ -78,14 +102,16 @@ app.get("/", (req, res) => {
   db.query(`SELECT * FROM cars;`)
     .then(data => {
       const sort = req.query.sort;
-
+      console.log("printing Sort", sort);
       const cars = data.rows;
+      console.log("printing cars", cars);
       const carsMakeToFilterBy = req.query.make;
+      console.log("printing carsbyfil", carsMakeToFilterBy);
       let selectCars = cars.filter(car => !carsMakeToFilterBy || car.make === carsMakeToFilterBy);
-      if(sort) {
+      if (sort) {
         selectCars = selectCars.sort((a,b) => {
           return Number(sort) * (a.price - b.price);
-          })
+        });
       }
       res.render('index', { cars: cars, selectCars: selectCars, name: req.session.name, selected: carsMakeToFilterBy, updateUrlQuery, url: req.url });
     })
@@ -197,8 +223,13 @@ app.get('/checkout', (req, res) => {
 
 //message form route
 app.get('/message', function(req, res) {
-  res.render("message");
-})
+  if (!req.session.name) {
+    res.status(403).send('<h1>Please make sure you are logged in! Click here to redirect back to  <a href= "/login" > the login page </a> or here to <a href= "/register" > register. </h1>');
+  } else {
+    res.render("message", { name: req.session.name });
+  }
+
+});
 //new listing form route
 app.get('/createNewListing', (req, res) => {
   res.render("createNewListing");
