@@ -7,10 +7,14 @@ const ENV = process.env.ENV || "development";
 const express = require("express");
 const cookieSession = require('cookie-session');
 const bodyParser = require("body-parser");
+<<<<<<< eeadadedb5a8b848f832aeb0036d7d7e3f61954f
 const updateUrlQuery = require("./routes/helpers");
 const sass = require("node-sass-middleware");//Angel
 
 // const sass = require("node-sass-middleware");
+=======
+const sass = require("node-sass-middleware");
+>>>>>>> revised users seeds, added app.js for messenger app and revised server.js to connect wtih css
 const app = express();
 const morgan = require('morgan');
 const path = require('path');
@@ -33,8 +37,13 @@ db.connect();
 //         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
 app.use(morgan('dev'));
 
+
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
+<<<<<<< HEAD
+=======
+
+>>>>>>> 674880a10def9c93d7dae35917e74c3c1506e1a8
 app.use(sass({
   /* Options */
   src: path.join(__dirname, 'styles'),
@@ -43,6 +52,7 @@ app.use(sass({
   outputStyle: 'compressed',
   prefix: '/styles'  // Where prefix is at <link rel="stylesheets" href="prefix/style.css"/>
 }));
+<<<<<<< HEAD
 app.use(express.static(path.join(__dirname, "public")));
 
 // const io = require('socket.io')(http);
@@ -54,15 +64,31 @@ app.use(express.static(path.join(__dirname, "public")));
 // });
 
 const io = require('socket.io')(http);
+=======
+
+
+app.use(express.static(path.join(__dirname, "public")));
+
+
+const io = require('socket.io')(http)
+>>>>>>> 674880a10def9c93d7dae35917e74c3c1506e1a8
 
 io.on('connection', socket => {
   console.log('A new user connected');
   socket.on('room', (room) => {
+<<<<<<< HEAD
     console.log('room', room);
     socket.join(room);
     io.to(room).emit('hi');
 
   });
+=======
+    console.log('room', room)
+    socket.join(room);
+    io.to(room).emit('hi');
+
+  })
+>>>>>>> 674880a10def9c93d7dae35917e74c3c1506e1a8
 
   socket.on('chat message', (msg) => {
     // console.log('message: ' + msg);
@@ -71,9 +97,17 @@ io.on('connection', socket => {
     socket.broadcast.emit('new message', msg);
 
   });
+<<<<<<< eeadadedb5a8b848f832aeb0036d7d7e3f61954f
 });
+<<<<<<< HEAD
 //broadcast the msgs to all the connected clients (resending it bk)
 
+=======
+=======
+})
+//broadcast the msgs to all the connected clients (resending it bk)
+>>>>>>> revised users seeds, added app.js for messenger app and revised server.js to connect wtih css
+>>>>>>> 674880a10def9c93d7dae35917e74c3c1506e1a8
 
 // Separated Routes for each Resource
 // Note: Feel free to replace the example routes below with your own
@@ -229,7 +263,12 @@ app.get('/message', function(req, res) {
     res.render("message", { name: req.session.name });
   }
 
+<<<<<<< HEAD
 });
+=======
+})
+
+>>>>>>> 674880a10def9c93d7dae35917e74c3c1506e1a8
 //new listing form route
 app.get('/createNewListing', (req, res) => {
   res.render("createNewListing");
