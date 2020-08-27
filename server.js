@@ -8,6 +8,7 @@ const express = require("express");
 const cookieSession = require('cookie-session');
 const bodyParser = require("body-parser");
 const sass = require("node-sass-middleware");
+const updateUrlQuery = require("./routes/helpers");
 
 // const sass = require("node-sass-middleware");
 const app = express();
@@ -78,6 +79,7 @@ const widgetsRoutes = require("./routes/widgets");
 const messagesRoutes = require("./routes/messages");
 const loginRoutes = require("./routes/login");
 const carsRoutes = require("./routes/cars");
+const { count } = require('console');
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
 app.use("/api/users", usersRoutes(db));
@@ -91,13 +93,22 @@ app.use("/api/cars", carsRoutes(db));
 // Home page
 // Warning: avoid creating more routes in this file!
 // Separate them into separate routes files (see above).
-app.get("/", (req, res) => {
 
+//render all the cars in the index page
+app.get("/", (req, res) => {
   db.query(`SELECT * FROM cars;`)
     .then(data => {
+      const sort = req.query.sort;
+
       const cars = data.rows;
-      //res.json({cars});
-      res.render('index', { cars: data.rows, name: req.session.name });
+      const carsMakeToFilterBy = req.query.make;
+      let selectCars = cars.filter(car => !carsMakeToFilterBy || car.make === carsMakeToFilterBy);
+      if(sort) {
+        selectCars = selectCars.sort((a,b) => {
+          return Number(sort) * (a.price - b.price);
+          })
+      }
+      res.render('index', { cars: cars, selectCars: selectCars, name: req.session.name, selected: carsMakeToFilterBy, updateUrlQuery, url: req.url });
     })
     .catch(err => {
       res
@@ -116,26 +127,25 @@ app.get('/login', (req, res) => {
   res.render("login");
 });
 
-///loging route
+///loging POST route
 app.post('/login', (req, res) => {
   const email = req.body.email;
-  const password1 = req.body.password;
-
-
-  db.query(`SELECT * FROM users
-  WHERE email = $1;`, [email])
+  const password = req.body.password;
+  //get the user by email
+  db.query(`SELECT * FROM users WHERE email = $1;`,[email])
+  //check if the user has imputed an email
     .then(data => {
       if (data.rows.length === 0) {
         res.status(400).send("Email does not exist");
-      } else if (password1 === data.rows[0].password) {
+        //ched if the passwords do match
+      } else if (password === data.rows[0].password) {
         req.session.userId = data.rows[0].id;
-        req.session.name = data.rows[0].name;//put the info in the suer
+        req.session.name = data.rows[0].name;//put the name in the header
         res.redirect('/');
       } else {
         console.log('102');
-        res.status(400).send("Email and password do not much");
+        res.status(400).send("Email password combination do not much");
       }
-
     })
     .catch(err => {
       res
@@ -143,6 +153,55 @@ app.post('/login', (req, res) => {
         .json({ error: err.message });
     });
 });
+
+//register POST route
+app.post("/register", (req, res) => {
+
+  //check if the password of the email is empty this is done through bootstrap ask if is OK?
+  const { name, email, password, street, province, city, country , postal_code, phone} = req.body;
+  const text = `SELECT * FROM users WHERE email = $1;`;
+  db.query(text, [email])
+    .then(data => {
+      //if the querry results in an empty array it meas that there are no such email address in the database
+      if (data.rows.length !== 0) {
+        res.send('An user with this email already excists, please change email or login');
+      } else {
+        //create a new user id, name, email, phone, password
+        const text = `INSERT INTO users ( name, email, phone, password) VALUES ($1, $2, $3, $4) RETURNING *;`;
+        const values = [name, email, phone, password];
+        db.query(text, values)
+          .then(data  => {
+            console.log(data);
+            //create a new address for the user id, users_id, province, city, country, street, postal_code)
+            const id = data.rows[0].id;
+            const text1 = `INSERT INTO addresses (users_id, country, province, city, street, postal_code) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
+            const values1 = [id, country, province, city, street, postal_code];
+            return db.query(text1, values1);
+
+          }).then(data => {
+            req.session.userId = data.rows[0].id;
+            req.session.name = data.rows[0].name;
+            res.redirect('/');
+          });
+
+      }
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ error: err.message });
+    });
+});
+
+//logout rout
+app.post('/logout', (req, res) => {
+  req.session.userId = null;
+  req.session.name = null;
+  res.redirect('/');
+});
+
+/////////////////////////////
+
 //register form route
 app.get('/register', (req, res) => {
   res.render("register");

@@ -12,4 +12,4 @@ INSERT INTO addresses (id, users_id, province, city, country, street, postal_cod
 INSERT INTO addresses (id, users_id, province, city, country, street, postal_code) VALUES ('12', '12', 'Northwest Territories', 'Yellowknife', 'Canada', '971 Sumbo Point', '93556');
 INSERT INTO addresses (id, users_id, province, city, country, street, postal_code) VALUES ('13', '13', 'Prince Edward Island', 'Souris', 'Canada', '830 Jelo Mill', '71284');
 INSERT INTO addresses (id, users_id, province, city, country, street, postal_code) VALUES ('14', '14', 'Newfoundland And Labrador', 'Argentia', 'Canada', '1915 Ikfe Extension', '85225');
-INSERT INTO addresses (id, users_id, province, city, country, street, postal_code) VALUES ('15', '15', 'Manitoba', 'Brandon', 'Canada', '546 Bapuc Highway', '37577');
+-- INSERT INTO addresses (id, users_id, province, city, country, street, postal_code) VALUES ('15', '15', 'Manitoba', 'Brandon', 'Canada', '546 Bapuc Highway', '37577');
