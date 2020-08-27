@@ -96,7 +96,10 @@ app.use("/api/cars", carsRoutes(db));
 
 //render all the cars in the index page
 app.get("/", (req, res) => {
-  db.query(`SELECT * FROM cars;`)
+  db.query(`
+  SELECT * FROM cars
+  WHERE availability = 'true';
+  `)
     .then(data => {
       const sort = req.query.sort;
       console.log("printing Sort", sort);
@@ -304,8 +307,8 @@ app.post('/createNewListing', (req, res) => {
   const vehicleInformation = [make, model, year, mileage, price, currentUser];
   // const sqlQuery = `INSERT INTO cars (id, make, model, year, mileage, price, image_url, owner_id)
   // VALUES (13,$1, $2, $3, $4, $5, 'someURL',2) ;`
-  db.query(`INSERT INTO cars (make, model, year, mileage, price, image_url, owner_id)
-  VALUES ($1, $2, $3, $4, $5, 'someURL', $6);
+  db.query(`INSERT INTO cars (make, model, year, mileage, price, image_url, availability, owner_id)
+  VALUES ($1, $2, $3, $4, $5, 'someURL', 'true', $6);
   `, vehicleInformation)
     .then(data => {
       console.log('console log from newlisting post request',data);
@@ -315,9 +318,11 @@ app.post('/createNewListing', (req, res) => {
       console.log('Here is the year', year);
       console.log('Here is the mileage', mileage);
       console.log('Here is the price', price);
-      console.log('Here is the country', country);
-      return db.query(`INSERT INTO addresses (province, city, country, street, postal_code)
-      VALUES (3,'Ontario', 'Toronto', $1, 'Brimorton', '1a1 241');`,[country])
+      // console.log('Here is the country', country);
+      console.log('cookie data:', currentUser);
+      // return db.query(`INSERT INTO addresses (province, city, country, street, postal_code)
+      // VALUES ('Ontario', 'Toronto', $1, 'Brimorton', '1a1 241');`,[country])
+      res.redirect('/');
     })
     .catch(err => {
       res
