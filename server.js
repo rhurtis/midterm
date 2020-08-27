@@ -7,13 +7,11 @@ const ENV = process.env.ENV || "development";
 const express = require("express");
 const cookieSession = require('cookie-session');
 const bodyParser = require("body-parser");
-<<<<<<< eeadadedb5a8b848f832aeb0036d7d7e3f61954f
+
 const updateUrlQuery = require("./routes/helpers");
 
 // const sass = require("node-sass-middleware");
-=======
 const sass = require("node-sass-middleware");
->>>>>>> revised users seeds, added app.js for messenger app and revised server.js to connect wtih css
 const app = express();
 const morgan = require('morgan');
 const path = require('path');
@@ -54,7 +52,6 @@ app.use(express.static(path.join(__dirname, "public")));
 
 
 const io = require('socket.io')(http)
-
 io.on('connection', socket => {
   console.log('A new user connected');
   socket.on('room', (room) => {
@@ -63,20 +60,12 @@ io.on('connection', socket => {
     io.to(room).emit('hi');
 
   })
-
   socket.on('chat message', (msg) => {
-    // console.log('message: ' + msg);
-    //db.query insert into
-
+    io.emit('new message', msg);
+    console.log('message: ' + msg);
     socket.broadcast.emit('new message', msg);
-
   });
-<<<<<<< eeadadedb5a8b848f832aeb0036d7d7e3f61954f
 });
-=======
-})
-//broadcast the msgs to all the connected clients (resending it bk)
->>>>>>> revised users seeds, added app.js for messenger app and revised server.js to connect wtih css
 
 // Separated Routes for each Resource
 // Note: Feel free to replace the example routes below with your own
@@ -224,12 +213,12 @@ app.get('/checkout', (req, res) => {
 
 //message form route
 app.get('/message', function(req, res) {
+
   if (!req.session.name) {
     res.status(403).send('<h1>Please make sure you are logged in! Click here to redirect back to  <a href= "/login" > the login page </a> or here to <a href= "/register" > register. </h1>');
   } else {
     res.render("message", { name: req.session.name });
   }
-
 })
 
 //new listing form route
