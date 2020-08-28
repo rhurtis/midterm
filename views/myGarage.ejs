@@ -13,40 +13,39 @@
     integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
   <script src="https://kit.fontawesome.com/a076d05399.js"></script>
   <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+
   <!----------------------------------SOCKET IO--------------------------------->
   <script src="/socket.io/socket.io.js"></script>
   <script src="/vendor/jquery-3.0.0.js"></script>
   <script> let socket = io(); </script>
   <script src="/scripts/app.js"></script>
-</head>>
+</head>
 
 <body>
   <header>
     <%- include('partials/_header') %>
   </header>
-  <!--main-->
-  <h1>my Garage</h1>
-  <div class="col-md-5">
-    <!-- <% for (car in cars) { %>
-              <img class="img-fluid rounded mb-3 mb-md-0" width="200" height="121" alt="" src=<%= "cars[car]['make']" %> />
-              <% } %> -->
-  </div>
+  <!------------------------------------main----------------------------------------------------->
+  <h1>My Garage</h1>
   <div class="col-md-7">
-    <% for (car in cars) { %>
-
-    <h5><%= cars[car]["make"] %></h5>
-    <h5><%= cars[car]["year"] %></h5>
-    <h5><%= cars[car]["model"] %></h5>
-    <h5><%= cars[car]["mileage"] %></h5>
-    <p><%= cars[car]["description"] %></p>
-    <form method='POST' action='/myFavourite'>
-      <input name='carId' type='text' value='<%= cars[car]["id"] %>'> </input>
+    <% for (car in carsf) { %>
+    <div class="image">
+      <img src="<%= carsf[car]['image_url'] %>" />
+    </div>
+    <h5>Year: <%= carsf[car]["year"] %></h5>
+    <h5>Make: <%= carsf[car]["make"] %></h5>
+    <h5>Model: <%= carsf[car]["model"] %></h5>
+    <h5>Mileage: <%= carsf[car]["mileage"] %>km</h5>
+    <h5>Price: $<%= carsf[car]["price"] %></h5>
+    <p>Description: <%= carsf[car]["description"] %></p>
+    <form id="favForm" method='POST' action='/myFavourite'>
+      <input id="removeF" name='carId' type='text' value='<%= carsf[car]["id"] %>'> </input>
       <button id='favourite' type='submit' class="btn btn-primary" href="#"> Remove from Favourites</button>
     </form>
     <% } %>
-
   </div>
-  <!--footer-->
+  </div>
+  <!----------------------------------------------footer----------------------------------------------------->
   <footer>
     <%- include('partials/_footer') %>
   </footer>

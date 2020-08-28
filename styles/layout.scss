@@ -1,13 +1,10 @@
-// See: https://sass-lang.com/
 
+#companyName {
+  font-size         : 55px;
+  color             : yellow;
+}
 
-// * {
-//   margin            : 0;
-//   padding           : 0;
-//   box-sizing        : boarder-box;
-// }
-
-#container {
+.container {
   width             : 100%;
 }
 
@@ -16,20 +13,44 @@
 }
 
 body {
-  padding-top        :20%;
+  padding-top     : 20%;
   .cars {
-    display: flex;
+    display       : flex;
     flex-direction: row;
   }
 .image {
-  width: 200px;
+  width           : 200px;
 img {
-  width: 200px;
+  width           : 200px;
 }
   }
 .carInfo {
-    padding: 50px;
+    padding        : 50px;
   }
 }
 
+#fav {
+display           : none;
 
+}
+
+#remove {
+  display         :none;
+}
+
+#removeF {
+ display         :none;
+}
+
+#favForm {
+  padding-bottom: 20px;
+}
+
+#myForms {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+select {
+  width: 60%;
+}
