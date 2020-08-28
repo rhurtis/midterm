@@ -97,7 +97,7 @@ app.get("/", (req, res) => {
       const carsMakeToFilterBy = req.query.make;
       let selectCars = cars.filter(car => !carsMakeToFilterBy || car.make === carsMakeToFilterBy);
       if (sort) {
-        selectCars = selectCars.sort((a,b) => {
+        selectCars = selectCars.sort((a, b) => {
           return Number(sort) * (a.price - b.price);
         });
       }
@@ -114,7 +114,7 @@ app.get("/", (req, res) => {
 
 //login form route
 app.get('/login', (req, res) => {
-  res.render("login", { name: req.session.name});
+  res.render("login", { name: req.session.name });
 });
 
 ///loging POST route
@@ -122,8 +122,8 @@ app.post('/login', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   //get the user by email
-  db.query(`SELECT * FROM users WHERE email = $1;`,[email])
-  //check if the user has imputed an email
+  db.query(`SELECT * FROM users WHERE email = $1;`, [email])
+    //check if the user has imputed an email
     .then(data => {
       if (data.rows.length === 0) {
         res.status(400).send("Email does not exist");
@@ -146,7 +146,7 @@ app.post('/login', (req, res) => {
 //register POST route
 app.post("/register", (req, res) => {
   //check if the password of the email is empty this is done through bootstrap ask if is OK?
-  const { name, email, street, province, city, country , postal_code, phone} = req.body;
+  const { name, email, street, province, city, country, postal_code, phone } = req.body;
   const password = bcrypt.hashSync(req.body.password, salt)
   const text = `SELECT * FROM users WHERE email = $1;`;
   db.query(text, [email])
@@ -159,7 +159,7 @@ app.post("/register", (req, res) => {
         const text = `INSERT INTO users ( name, email, phone, password) VALUES ($1, $2, $3, $4) RETURNING *;`;
         const values = [name, email, phone, password];
         db.query(text, values)
-          .then(data  => {
+          .then(data => {
             //create a new address
             req.session.userId = data.rows[0].id;
             req.session.name = data.rows[0].name;
@@ -168,8 +168,6 @@ app.post("/register", (req, res) => {
             const values1 = [users_id, province, city, country, street, postal_code];
             return db.query(text1, values1);
           }).then(data => {
-            // req.session.userId = data.rows[0].id;
-            // req.session.name = data.rows[0].name;
             res.redirect('/');
           });
       }
@@ -192,7 +190,7 @@ app.post('/logout', (req, res) => {
 
 //register form route
 app.get('/register', (req, res) => {
-  res.render("register", { name: req.session.name});
+  res.render("register", { name: req.session.name });
 });
 
 
@@ -206,7 +204,7 @@ app.get('/message', function(req, res) {
 });
 //new listing form route
 app.get('/createNewListing', (req, res) => {
-  res.render("createNewListing", { name: req.session.name});
+  res.render("createNewListing", { name: req.session.name });
 });
 
 //myGarage
@@ -214,20 +212,20 @@ app.get('/myGarage', (req, res) => {
   const currentUserId = req.session.userId;
   const queryValues = [currentUserId];
   db.query(`
-  SELECT cars.id, make, year, model, mileage, description
+  SELECT cars.id, make, year, model, mileage, description, image_url, price
   FROM cars
   JOIN favourites ON cars.id = favourites.cars_id
   WHERE favourites.user_id = $1 AND favourites.favourite = 'true';
   `, queryValues)
-  .then(data => {
-    const cars = data.rows;
-    res.render('myGarage', { cars: data.rows, name: req.session.name});
-  })
-  .catch(err => {
-    res
-      .status(500)
-      .json({ error: err.message });
-  });
+    .then(data => {
+      // const cars = data.rows;
+      res.render('myGarage', { carsf: data.rows, name: req.session.name });
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ error: err.message });
+    });
 });
 
 // post request for favourites
@@ -239,20 +237,20 @@ app.post('/myFavourite', (req, res) => {
   SELECT * FROM favourites
   WHERE favourites.user_id = $1
   AND favourites.cars_id = $2; `, infoArray)
-      .then(data => {
-        const cars = data.rows;
-        if (data.rows.length) {
-          return db.query(`UPDATE favourites SET favourite = $1 WHERE id = $2;`,[!data.rows[0].favourite, data.rows[0].id])
-        } else {
-          return db.query(`
+    .then(data => {
+      const cars = data.rows;
+      if (data.rows.length) {
+        return db.query(`UPDATE favourites SET favourite = $1 WHERE id = $2;`, [!data.rows[0].favourite, data.rows[0].id])
+      } else {
+        return db.query(`
           INSERT INTO favourites (user_id, cars_id, favourite)
           VALUES ($1, $2, true)
           `, infoArray)
-        }
-      })
-        .then(data => {
-          res.redirect('/myGarage')
-        })
+      }
+    })
+    .then(data => {
+      res.redirect('/myGarage')
+    })
 });
 
 //post request for new listing form
@@ -266,7 +264,7 @@ app.post('/createNewListing', (req, res) => {
   const price = req.body.price;
   const description = req.body.description;
   //console.log('HERE IS THE NEW LISTING OBJECT',body);
-  const uploadedPic = 'http://localhost:8080/'+req.body.filename;
+  const uploadedPic = 'http://localhost:8080/' + req.body.filename;
 
   const vehicleInformation = [year, make, model, mileage, price, uploadedPic, currentUser, description];
   db.query(`INSERT INTO cars (year, make, model, mileage, price, image_url, availability, owner_id, description)
@@ -277,9 +275,9 @@ app.post('/createNewListing', (req, res) => {
     })
     .catch(err => {
       res
-      .status(500)
-      .json({ error: err.message });
-      });
+        .status(500)
+        .json({ error: err.message });
+    });
 });
 
 // post request for removing listing
@@ -291,22 +289,22 @@ app.post('/removeListing', (req, res) => {
   SELECT * FROM cars
   WHERE cars.owner_id = $1
   AND cars.availability = true; `, [currentUserId])
-      .then(data => {
-        const cars = data.rows;
+    .then(data => {
+      const cars = data.rows;
 
-        if (data.rows.length) {
-          return db.query(`UPDATE cars SET availability = $1 WHERE id = $2;`,[!data.rows[0].availability, data.rows[0].id])
-        }
-      })
-        .then(data => {
-          res.redirect('/')
-        })
+      if (data.rows.length) {
+        return db.query(`UPDATE cars SET availability = $1 WHERE id = $2;`, [!data.rows[0].availability, data.rows[0].id])
+      }
+    })
+    .then(data => {
+      res.redirect('/')
+    })
 
-      .catch(err => {
-        res
-          .status(500)
-          .json({ error: err.message });
-      });
+    .catch(err => {
+      res
+        .status(500)
+        .json({ error: err.message });
+    });
 });
 
 http.listen(PORT, () => {

@@ -20,7 +20,7 @@
   <script src="/vendor/jquery-3.0.0.js"></script>
   <script> let socket = io(); </script>
   <script src="/scripts/app.js"></script>
-</head>>
+</head>
 
 <body>
   <header>
@@ -28,12 +28,13 @@
   </header>
 
   <!---------------------------main--------------------------->
-  <div class="container id='mainContainer'">
-    <div class="row">
+  <div class="container" id='mainContainer'>
+    <div class=" row">
       <div class="side-container col-lg-3">
         <div class="" id="choose-car">
 
           <!---------------------------filter model--------------------------->
+
           <select class="mdb-select colorful-select dropdown-primary md-form" multiple searchable="Search here..">
             <option onclick="window.location.href='/'" value="" <%= !!selected && 'selected' %>>Clear</option>
             <% for (car in cars) { %>
@@ -48,8 +49,8 @@
         <div class="" id="choose-price">
           <select class="mdb-select colorful-select dropdown-primary md-form" multiple searchable="Search here..">
             <option onclick="window.location.href='/'" value="" <%= !!selected && 'selected' %>>Clear</option>
-            <option onclick="window.location.href='<%= updateUrlQuery("sort", -1, url) %>'">Price Ascending</option>
-            <option onclick="window.location.href='<%= updateUrlQuery("sort", 1, url) %>'">Price Descending</option>
+            <option onclick="window.location.href='<%= updateUrlQuery("sort", -1, url) %>'">Price Descending</option>
+            <option onclick="window.location.href='<%= updateUrlQuery("sort", 1, url) %>'">Price Ascending</option>
           </select>
         </div>
       </div>
@@ -71,16 +72,19 @@
               <h5>Mileage: <%= selectCars[car]["mileage"] %>km</h5>
               <h5>Price: $<%= selectCars[car]["price"] %></h5>
               <p>Description: <%= selectCars[car]["description"] %></p>
-              <button class="btn btn-primary message-owner" type="button" id="<%=selectCars[car]['owner_id'] %>">Message
-                Seller</button>
-              <form method='POST' action='/myFavourite'>
-                <input name='carId' type='text' value='<%= selectCars[car]["id"] %>'> </input>
-                <button id='favourite' type='submit' class="btn btn-primary">Favourite Car</button>
-              </form>
-              <form method='POST' action='/removeListing'>
-                <input name='carId' type='text' value='<%= selectCars[car]["id"] %>'> </input>
-                <button id='removeListing' type='submit' class="btn btn-primary" href="#">The Car is Sold</button>
-              </form>
+              <div id="myForms">
+                <button class="btn btn-primary message-owner" type="button"
+                  id="<%=selectCars[car]['owner_id'] %>">Message
+                  Seller</button>
+                <form method='POST' action='/myFavourite'>
+                  <input id="fav" name='carId' type='text' value='<%= selectCars[car]["id"] %>'> </input>
+                  <button id='favourite' type='submit' class=" btn btn-primary">Favourite Car</button>
+                </form>
+                <form method='POST' action='/removeListing'>
+                  <input id="remove" name='carId' type='text' value='<%= selectCars[car]["id"] %>'> </input>
+                  <button id='removeListing' type='submit' class="btn btn-primary" href="#">Mark as SOLD!</button>
+                </form>
+              </div>
             </div>
           </div>
           <% } %>
