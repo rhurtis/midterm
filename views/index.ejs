@@ -20,7 +20,7 @@
   <script src="/vendor/jquery-3.0.0.js"></script>
   <script> let socket = io(); </script>
   <script src="/scripts/app.js"></script>
-</head>>
+</head>
 
 <body>
   <header>
@@ -49,7 +49,7 @@
         <div class="" id="choose-price">
           <select class="mdb-select colorful-select dropdown-primary md-form" multiple searchable="Search here..">
             <option onclick="window.location.href='/'" value="" <%= !!selected && 'selected' %>>Clear</option>
-            <option onclick="window.location.href='<%= updateUrlQuery("sort", -1, url) %>'">Price Decending</option>
+            <option onclick="window.location.href='<%= updateUrlQuery("sort", -1, url) %>'">Price Descending</option>
             <option onclick="window.location.href='<%= updateUrlQuery("sort", 1, url) %>'">Price Ascending</option>
           </select>
         </div>
