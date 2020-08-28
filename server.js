@@ -161,14 +161,16 @@ app.post("/register", (req, res) => {
         db.query(text, values)
           .then(data  => {
             //create a new address
+            req.session.userId = data.rows[0].id;
+            req.session.name = data.rows[0].name;
             const users_id = data.rows[0].id;
             const text1 = `INSERT INTO addresses (users_id, province, city, country, street, postal_code) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
             const values1 = [users_id, province, city, country, street, postal_code];
             return db.query(text1, values1);
           }).then(data => {
-            req.session.userId = data.rows[0].id;
-            req.session.name = data.rows[0].name;
-            res.redirect('/login');
+            // req.session.userId = data.rows[0].id;
+            // req.session.name = data.rows[0].name;
+            res.redirect('/');
           });
       }
     })
