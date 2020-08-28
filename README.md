@@ -5,6 +5,14 @@ TACOCARS
 
 This is a buy/sell website where buyer/ seller can sign-up and communicate through the web. The seller can create posts and delete the posts they created. The buyer can favorite the cars they are interested in, look at them in the My Garage page later and remove it if they wish to. The buyer and seller can communicate through TacoChat, a realtime chat to negotiate the price, exchange phone numbers etc.
 
+## Final Product
+
+!["screenshot for Home Page"](https://github.com/rhurtis/midterm/blob/master/doc/Homepage1.png?raw=true)
+!["screenshot for Create New"](https://github.com/rhurtis/midterm/blob/master/doc/Create_new.png?raw=true)
+!["screenshot for Favourites"](https://github.com/rhurtis/midterm/blob/master/doc/Favourites.png?raw=true)
+!["screenshot for TacoChat"](https://github.com/rhurtis/midterm/blob/master/doc/Message_Chat.png?raw=true)
+
+
 
 ## Getting Started
 
