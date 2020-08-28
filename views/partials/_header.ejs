@@ -1,41 +1,47 @@
-<head>
+<div>
   <script src=“https://kit.fontawesome.com/a076d05399.js”></script>
   <!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-          <img src="https://vignette.wikia.nocookie.net/worldofcarsdrivein/images/0/0e/That_thing_to_eat.png/revision/latest/scale-to-width-down/300?cb=20171008122814" alt="tacocar">
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav ml-auto">
-        <% if(name){ %>
-        <li class="nav-item">
-          <span style="color: red;"><%= name %></span>
-        </li>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <h5> </h5>
+
+
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <img
+          src="https://vignette.wikia.nocookie.net/worldofcarsdrivein/images/0/0e/That_thing_to_eat.png/revision/latest/scale-to-width-down/300?cb=20171008122814"
+          alt="tacocar">
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <% if(name){ %>
+          <li class="nav-item">
+            <span style="color: red;"><%= name %></span>
+          </li>
           <form method="POST" action="/logout">
             <button type="submit" class="btn btn-link">Logout<span class="glyphicon glyphicon-log-out"></span></button>
           </form>
-        </li>
-        <li>
-          <a class="nav-link" href="/myGarage"> <i class="fas fa-warehouse"></i> My Garage</a>
-        </li>
-        <li>
-          <a class="nav-link" href="/createNewListing"> <i class="fas fa-warehouse"></i> New Listing</a>
-        </li>
-        <% } else { %>
-        <li class="nav-item">
-          <a class="nav-link" href="/login">Login</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/register">Register</a>
-        <li class="nav-item">
-          <% } %>
-      </ul>
-    </div>
+          </li>
+          <li>
+            <a class="nav-link" href="/myGarage"> <i class="fas fa-warehouse"></i> My Garage</a>
+          </li>
+          <li>
+            <a class="nav-link" href="/createNewListing"> <i class="fas fa-warehouse"></i> New Listing</a>
+          </li>
+          <% } else { %>
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/register">Register</a>
+          <li class="nav-item">
+            <% } %>
+        </ul>
+      </div>
   </nav>
 
   </nav>
-</head>
+</div>

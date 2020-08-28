@@ -4,85 +4,97 @@
 <head>
   <title>Home Page</title>
 
+  <!----------------------------------Meta Information------------------------------->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-  <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
-  <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
+
+  <!----------------------------------CSS and icons----------------------------->
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
   <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
-    <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
-    <!--fonts-->
-    <script src=“https://kit.fontawesome.com/a076d05399.js”></script>
-    <!------------------------------Socet------------------------------->
-    <script src="/socket.io/socket.io.js"></script>
-    <script> var socket = io(); </script>
-    <script type="text/javascript" src="/scripts/app.js"></script>
-  </head>
+  <!----------------------------------SOCKET IO--------------------------------->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/vendor/jquery-3.0.0.js"></script>
+  <script> let socket = io(); </script>
+  <script src="/scripts/app.js"></script>
+</head>>
 
-  <body>
-    <header>
-      <%- include('partials/_header') %>
-    </header>
-    <!---------------------------main--------------------------->
+<body>
+  <header>
+    <%- include('partials/_header') %>
+  </header>
 
-    <div class="container id='mainContainer'">
-      <div class="row">
-        <div class="side-container col-lg-3">
-          <div class="" id="choose-car">
-            <!---------------------------filter model--------------------------->
-            <select class="mdb-select colorful-select dropdown-primary md-form" multiple searchable="Search here..">
-              <option onclick="window.location.href='/'" value="" <%= !!selected && 'selected' %>>Clear</option>
-              <% for (car in cars) { %>
-              <option <%= selected === cars[car].make && 'selected' %> onclick="window.location.href='<%= updateUrlQuery("make",cars[car].make, url) %>'" value="<%= car %>"><%= cars[car]["make"] %></option>
-             <% } %>
-            </select>
-          </div>
-          <!---------------------------filter Price--------------------------->
-          <div class="" id="choose-price">
-            <select class="mdb-select colorful-select dropdown-primary md-form" multiple searchable="Search here..">
-              <option onclick="window.location.href='/'" value="" <%= !!selected && 'selected' %>>Clear</option>
-              <option onclick="window.location.href='<%= updateUrlQuery("sort", -1, url) %>'">Price Ascending</option>
-              <option onclick="window.location.href='<%= updateUrlQuery("sort", 1, url) %>'">Price Descending</option>
-            </select>
-          </div>
+  <!---------------------------main--------------------------->
+  <div class="container id='mainContainer'">
+    <div class="row">
+      <div class="side-container col-lg-3">
+        <div class="" id="choose-car">
+
+          <!---------------------------filter model--------------------------->
+          <select class="mdb-select colorful-select dropdown-primary md-form" multiple searchable="Search here..">
+            <option onclick="window.location.href='/'" value="" <%= !!selected && 'selected' %>>Clear</option>
+            <% for (car in cars) { %>
+            <option <%= selected === cars[car].make && 'selected' %>
+              onclick="window.location.href='<%= updateUrlQuery("make",cars[car].make, url) %>'" value="<%= car %>">
+              <%= cars[car]["make"] %></option>
+            <% } %>
+          </select>
         </div>
-        <!---------------------------cars container--------------------------->
-        <div class="main-container col-lg-9">
-          <div class="row">
-            <!---------------------------cars--------------------------->
-            <% for (car in selectCars) { %>
-              <div class="col-md-5">
-                <img class="img-fluid rounded mb-3 mb-md-0" width="200" height="121" alt=""
-                  src="<%= selectCars[car]['image_url'] %>" />
-              </div>
-              <div class="col-md-7">
-                <h5>Year: <%= selectCars[car]["year"] %></h5>
-                <h5>Make: <%= selectCars[car]["make"] %></h5>
-                <h5>Model: <%= selectCars[car]["model"] %></h5>
-                <h5>Mileage: <%= selectCars[car]["mileage"] %>km</h5>
-                <h5>Price: $<%= selectCars[car]["price"] %></h5>
-                <p>Description: <%= selectCars[car]["description"] %></p>
-                <button class="btn btn-primary message-owner" type="button" id="<%=selectCars[car]['owner_id'] %>">Message
-                  Seller</button>
-                   <form method = 'POST' action = '/myFavourite'>
-                      <input name = 'carId' type = 'text' value = '<%= selectCars[car]["id"] %>'> </input>
-                      <button id ='favourite' type = 'submit' class="btn btn-primary" >Favourite Car</button>
-                   </form>
-                <form method = 'POST' action = '/removeListing'>
-                <input name = 'carId' type = 'text' value = '<%= selectCars[car]["id"] %>'> </input>
-                <button id ='removeListing' type = 'submit' class="btn btn-primary" href="#">The Car is Sold</button>
-                </form>
-              </div>
-              <% } %>
-            <!--------------------------- end cars--------------------------->
+
+        <!---------------------------filter Price--------------------------->
+        <div class="" id="choose-price">
+          <select class="mdb-select colorful-select dropdown-primary md-form" multiple searchable="Search here..">
+            <option onclick="window.location.href='/'" value="" <%= !!selected && 'selected' %>>Clear</option>
+            <option onclick="window.location.href='<%= updateUrlQuery("sort", -1, url) %>'">Price Ascending</option>
+            <option onclick="window.location.href='<%= updateUrlQuery("sort", 1, url) %>'">Price Descending</option>
+          </select>
+        </div>
+      </div>
+
+      <!---------------------------cars container--------------------------->
+      <div class="main-container col-lg-9">
+        <div class="row">
+
+          <!---------------------------cars--------------------------->
+          <% for (car in selectCars) { %>
+          <div class="cars">
+            <div class="image">
+              <img src="<%= selectCars[car]['image_url'] %>" />
+            </div>
+            <div class="carInfo">
+              <h5>Year: <%= selectCars[car]["year"] %></h5>
+              <h5>Make: <%= selectCars[car]["make"] %></h5>
+              <h5>Model: <%= selectCars[car]["model"] %></h5>
+              <h5>Mileage: <%= selectCars[car]["mileage"] %>km</h5>
+              <h5>Price: $<%= selectCars[car]["price"] %></h5>
+              <p>Description: <%= selectCars[car]["description"] %></p>
+              <button class="btn btn-primary message-owner" type="button" id="<%=selectCars[car]['owner_id'] %>">Message
+                Seller</button>
+              <form method='POST' action='/myFavourite'>
+                <input name='carId' type='text' value='<%= selectCars[car]["id"] %>'> </input>
+                <button id='favourite' type='submit' class="btn btn-primary">Favourite Car</button>
+              </form>
+              <form method='POST' action='/removeListing'>
+                <input name='carId' type='text' value='<%= selectCars[car]["id"] %>'> </input>
+                <button id='removeListing' type='submit' class="btn btn-primary" href="#">The Car is Sold</button>
+              </form>
+            </div>
           </div>
+          <% } %>
+
+          <!--------------------------- end cars--------------------------->
         </div>
       </div>
     </div>
-    <!--------------------------- footer --------------------------->
-    <footer>
-      <%- include('partials/_footer') %>
-    </footer>
-  </body>
+  </div>
+
+  <!--------------------------- footer --------------------------->
+  <footer>
+    <%- include('partials/_footer') %>
+  </footer>
+</body>
+
 </html>

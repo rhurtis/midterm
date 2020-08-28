@@ -1,80 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Home Page</title>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+  <title>Home Page</title>
+  <!----------------------------------Meta Information------------------------------->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
-    <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
-    <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+  <!----------------------------------CSS and icons----------------------------->
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+  <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
 
-    <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
-    <script type="text/javascript" src="/scripts/app.js"></script>
-  </head>
+  <!----------------------------------SOCKET IO--------------------------------->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/vendor/jquery-3.0.0.js"></script>
+  <script> let socket = io(); </script>
+  <script src="/scripts/app.js"></script>
+</head>
 
-  <body>
-    <header>
-      <%- include('partials/_header') %>
-    </header>
-    <!--main-->
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-10 col-xl-9 mx-auto">
-          <div class="card card-signin flex-row my-5">
-            <div class="card-body">
-              <h5 class="card-title text-center">Register</h5>
-              <form class="form-signin form-row" method="POST" action="/register">
-                <div class="form-label-group col-md-4">
-                  <label for="inputUserame">Username</label>
-                  <input type="text" name="name" method="POST" action="/register" id="inputUserame" class="form-control" placeholder="Username" required autofocus>
-                </div>
-                <div class="form-label-group col-md-4">
-                  <label for="inputEmail">Email address</label>
-                  <input type="email" name="email" method="POST" action="/register" id="inputEmail" class="form-control" placeholder="Email address" required>
-                </div>
-                <div class="form-label-group col-md-4">
-                  <label for="inputPassword">Password</label>
-                  <input type="password" name="password" method="POST" action="/register" id="inputPassword" class="form-control" placeholder="Password" required>
-                </div>
-                <div class="form-group col-md-12">
-                  <label for="inputAddress1">Street</label>
-                  <input type="text" name="street" method="POST" action="/register" id="inputStreet" class="form-control" placeholder="123 Aven" required>
-                </div>
-                <div class="form-label-group col-md-2">
-                  <label for="inputProvince">Province</label>
-                  <input type="text" name="province" method="POST" action="/register" id="inputProvince" class="form-control" placeholder="Province" required>
-                </div>
-                <div class="form-label-group col-md-5">
-                  <label for="inputCity">City</label>
-                  <input type="text" name="city" method="POST" action="/register" id="inputCity" class="form-control" placeholder="City" required>
-                </div>
-                <div class="form-label-group col-md-2">
-                  <label for="inputCountry">Country</label>
-                  <input type="text" name="country" method="POST" action="/register" id="inputCountry" class="form-control" placeholder="Country" required>
-                </div>
-                <div class="form-label-group col-md-2">
-                  <label for="inputZip">Postal Code</label>
-                  <input type="text" name="postal_code" method="POST" action="/register" id="inputpostal_code" class="form-control" placeholder="Postal Code" required>
-                </div>
-                <div class="form-label-group col-md-3">
-                  <label for="inputPhone">Phone number</label>
-                  <input type="text" name="phone" method="POST" action="/register" id="inputPhone" class="form-control" placeholder="Phone" required>
-                </div>
-                <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Register</button>
-                <a class="d-block text-center mt-2 small" href="/login">Sign In</a>
-              </form>
-            </div>
+<body>
+  <header>
+    <%- include('partials/_header') %>
+  </header>
+  <!--main-->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10 col-xl-9 mx-auto">
+        <div class="card card-signin flex-row my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">Register</h5>
+            <form class="form-signin form-row" method="POST" action="/register">
+              <div class="form-label-group col-md-4">
+                <label for="inputUserame">Username</label>
+                <input type="text" name="name" method="POST" action="/register" id="inputUserame" class="form-control"
+                  placeholder="Username" required autofocus>
+              </div>
+              <div class="form-label-group col-md-4">
+                <label for="inputEmail">Email address</label>
+                <input type="email" name="email" method="POST" action="/register" id="inputEmail" class="form-control"
+                  placeholder="Email address" required>
+              </div>
+              <div class="form-label-group col-md-4">
+                <label for="inputPassword">Password</label>
+                <input type="password" name="password" method="POST" action="/register" id="inputPassword"
+                  class="form-control" placeholder="Password" required>
+              </div>
+              <div class="form-group col-md-12">
+                <label for="inputAddress1">Street</label>
+                <input type="text" name="street" method="POST" action="/register" id="inputStreet" class="form-control"
+                  placeholder="123 Aven" required>
+              </div>
+              <div class="form-label-group col-md-2">
+                <label for="inputProvince">Province</label>
+                <input type="text" name="province" method="POST" action="/register" id="inputProvince"
+                  class="form-control" placeholder="Province" required>
+              </div>
+              <div class="form-label-group col-md-5">
+                <label for="inputCity">City</label>
+                <input type="text" name="city" method="POST" action="/register" id="inputCity" class="form-control"
+                  placeholder="City" required>
+              </div>
+              <div class="form-label-group col-md-2">
+                <label for="inputCountry">Country</label>
+                <input type="text" name="country" method="POST" action="/register" id="inputCountry"
+                  class="form-control" placeholder="Country" required>
+              </div>
+              <div class="form-label-group col-md-2">
+                <label for="inputZip">Postal Code</label>
+                <input type="text" name="postal_code" method="POST" action="/register" id="inputpostal_code"
+                  class="form-control" placeholder="Postal Code" required>
+              </div>
+              <div class="form-label-group col-md-3">
+                <label for="inputPhone">Phone number</label>
+                <input type="text" name="phone" method="POST" action="/register" id="inputPhone" class="form-control"
+                  placeholder="Phone" required>
+              </div>
+              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Register</button>
+              <a class="d-block text-center mt-2 small" href="/login">Sign In</a>
+            </form>
           </div>
         </div>
       </div>
     </div>
-    <!--footer-->
-    <%- include('partials/_footer') %>
-  </body>
+  </div>
+  <!--footer-->
+  <%- include('partials/_footer') %>
+</body>
 
 </html>

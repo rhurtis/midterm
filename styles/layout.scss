@@ -1,10 +1,35 @@
 // See: https://sass-lang.com/
 
-// body {
-//   background-color: #EEE;
 
-//   h1 {
-//     color: #244751;
-//   }
-
+// * {
+//   margin            : 0;
+//   padding           : 0;
+//   box-sizing        : boarder-box;
 // }
+
+#container {
+  width             : 100%;
+}
+
+#sticky-footer {
+  width           : 100%
+}
+
+body {
+  padding-top        :20%;
+  .cars {
+    display: flex;
+    flex-direction: row;
+  }
+.image {
+  width: 200px;
+img {
+  width: 200px;
+}
+  }
+.carInfo {
+    padding: 50px;
+  }
+}
+
+

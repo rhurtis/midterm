@@ -2,36 +2,30 @@
 <html lang="en">
 
 <head>
+  <title>Message</title>
+
   <!---------------------Meta Information-------------------------->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=10">
 
-  <!---------------------External CSS-------------------------->
+  <!---------------------CSS and icons-------------------------->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
     integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-
   <link rel="stylesheet" href="/styles/chat.css" type="text/css" />
+  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
+  <!------------------------SOCKET IO----------------------------->
   <script src="/socket.io/socket.io.js"></script>
   <script src="/vendor/jquery-3.0.0.js"></script>
-  <script>
-    var socket = io();
-  </script>
+  <script> let socket = io(); </script>
   <script src="/scripts/app.js"></script>
 
-
-  <title>Message</title>
-  <!---------------------External CSS-------------------------->
-  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </head>
-
-
 
 <body>
   <script> window.author = "<%= name %>" </script>
   <header class="header">
     <%- include('partials/_header') %>
-
   </header>
   <div class="chat-container">
     <div class="chat-header">
@@ -41,63 +35,30 @@
       </div>
       <p id="your-name"> <%= name %> </p>
     </div>
-    <!---------------------------------------------------->
+
+    <!------------------------------CHAT BOXES------------------------------->
     <div class="chat-section">
       <div class="main-wrapper">
         <div class="chat-content">
           <div class="message">
-            <div class="message-row other-message">
-              <div class="message-title">
-                🚗 <span> Angel Ho </span>
-              </div>
-              <div class="message-text">
-                Hi there! Why do you want to sell this car?
-              </div>
-              <div class="message-time">
-                Aug 22 2020
-              </div>
-            </div>
-            <div class="message-row you-message">
-              <div class="message-title">
-                🚙 <span> Stephanie Wolff</span>
-              </div>
-              <div class="message-text">
-                Hi Angel! I really like this car but I am moving out of the country! Do you want to come see the car?
-              </div>
-              <div class="message-time">
-                Aug 22 2020
-              </div>
-
-            </div>
           </div>
-
         </div>
-        <!--------------------------------------------------------------------->
-        <form class="msg-text">
 
+        <!---------------------------MESSAGE BOX----------------------------------->
+        <form class="msg-text">
           <input type="text" name="msg" id="msg" placeholder="Type a message here..." autocomplete="off">
           <button id="btn-send">
             <i class="fas fa-car-side"> Send </i>
           </button>
         </form>
-
-        <!-- <script src="/socket.io/socket.io.js"></script>
-        <script src="https://code.jquery.com/jquery-1.11.1.js"></script> -->
       </div>
     </div>
   </div>
 
-  <!-- <script>
-    const socket = io('http://localhost:8080/message');
-  </script> -->
-
-
-  <!-- footer-->
+  <!------------------------------FOOTER----------------------------->
   <footer class="footer">
     <%- include('partials/_footer') %>
   </footer>
-
 </body>
-
 
 </html>
