@@ -23,6 +23,10 @@ app.use(cookieSession({
   keys: ['userId']
 }));
 
+//getting picture to upload
+app.use(express.static('images/'));
+
+
 // PG database client/connection setup
 const { Pool } = require('pg');
 const dbParams = require('./lib/db.js');
@@ -87,7 +91,7 @@ app.get("/", (req, res) => {
   WHERE availability = 'true';
   `)
     .then(data => {
-      console.log('here is the mai page data:',data)
+      //console.log('here is the mai page data:',data)
       const cars = data.rows;
       const sort = req.query.sort;
       const carsMakeToFilterBy = req.query.make;
@@ -157,14 +161,16 @@ app.post("/register", (req, res) => {
         db.query(text, values)
           .then(data  => {
             //create a new address
+            req.session.userId = data.rows[0].id;
+            req.session.name = data.rows[0].name;
             const users_id = data.rows[0].id;
             const text1 = `INSERT INTO addresses (users_id, province, city, country, street, postal_code) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
             const values1 = [users_id, province, city, country, street, postal_code];
             return db.query(text1, values1);
           }).then(data => {
-            req.session.userId = data.rows[0].id;
-            req.session.name = data.rows[0].name;
-            res.redirect('/login');
+            // req.session.userId = data.rows[0].id;
+            // req.session.name = data.rows[0].name;
+            res.redirect('/');
           });
       }
     })
@@ -259,9 +265,12 @@ app.post('/createNewListing', (req, res) => {
   const mileage = req.body.mileage;
   const price = req.body.price;
   const description = req.body.description;
-  const vehicleInformation = [year, make, model, mileage, price, currentUser, description];
+  //console.log('HERE IS THE NEW LISTING OBJECT',body);
+  const uploadedPic = 'http://localhost:8080/'+req.body.filename;
+
+  const vehicleInformation = [year, make, model, mileage, price, uploadedPic, currentUser, description];
   db.query(`INSERT INTO cars (year, make, model, mileage, price, image_url, availability, owner_id, description)
-  VALUES ($1, $2, $3, $4, $5, 'someURL', 'true', $6, $7);
+  VALUES ($1, $2, $3, $4, $5, $6, 'true', $7, $8);
   `, vehicleInformation)
     .then(data => {
       res.redirect('/');
